@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 require "modern/version"
 
+require "modern/app"
+
 module Modern
-  # Your code goes here...
 end
