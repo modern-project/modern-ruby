@@ -1,0 +1,3 @@
+module Modern
+  VERSION = "0.0.0"
+end
