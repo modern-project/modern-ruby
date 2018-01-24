@@ -39,6 +39,8 @@ module Modern
     def call(env)
       request = Modern::Request.new(env)
       response = Modern::Response.new
+      response.headers["X-Response-Id"] = request.request_id
+
       route = @router.resolve(request.request_method, request.path_info)
 
       begin
@@ -50,6 +52,8 @@ module Modern
       rescue StandardError => err
         handle_error(response, err)
         response.finish
+      ensure
+        request.cleanup
       end
     end
   end

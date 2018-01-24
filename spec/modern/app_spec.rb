@@ -14,5 +14,21 @@ describe Modern::App do
       expect(last_response.headers["Content-Type"]).to eq("application/json")
       expect(last_response.status).to eq(404)
     end
+
+    it "returns an X-Response-Id header with its responses" do
+      header "Accept", "application/json"
+      get "/"
+
+      id1 = last_response.headers["X-Response-Id"]
+      
+      header "Accept", "application/json"
+      get "/"
+
+      id2 = last_response.headers["X-Response-Id"]
+
+      expect(id1).not_to be_nil
+      expect(id2).not_to be_nil
+      expect(id1).not_to eq(id2)
+    end
   end
 end

@@ -6,7 +6,7 @@ module Modern
   class Response < Rack::Response
     def json(object, pretty: false)
       headers["Content-Type"] = "application/json"
-      
+
       if pretty
         write(JSON.pretty_generate(object))
       else
