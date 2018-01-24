@@ -1,4 +1,4 @@
-require 'modern/app'
+require 'modern/app/flat_router'
 
 shared_context "routing test" do
   let(:get_root) do
@@ -51,11 +51,11 @@ shared_context "routing test" do
   end
 
   let (:router) do
-    Modern::App::Router.new(routes: descriptor.routes)
+    Modern::App::FlatRouter.new(routes: descriptor.routes)
   end
 end
 
-describe Modern::App::Router do
+describe Modern::App::FlatRouter do
   context "a few simple route paths" do
     include_context "routing test"
 
