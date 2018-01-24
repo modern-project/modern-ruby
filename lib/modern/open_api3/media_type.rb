@@ -10,6 +10,7 @@ module Modern
     class MediaType < Modern::OpenAPI3::Base
       include Modern::OpenAPI3::SpecificationExtensions
 
+      # TODO: implement Schema object, not just a raw hash (too complex right now)
       attr_accessor :schema
       attr_accessor :example
       attr_reader :examples
@@ -22,7 +23,7 @@ module Modern
 
       def to_openapi3
         _ext_openapi3! \
-          "schema" => schema&.to_openapi3,
+          "schema" => schema,
           "example" => example,
           "examples" => examples.empty? ? nil : examples.map { |k, v| [k, v.to_openapi3] }.to_h,
           "encoding" => encoding.empty? ? nil : encoding.map { |k, v| [k, v.to_openapi3] }.to_h

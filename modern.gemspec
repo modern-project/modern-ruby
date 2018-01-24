@@ -33,6 +33,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rubocop"
   spec.add_development_dependency "ruby-debug-ide"
 
+  spec.add_runtime_dependency "mime-types", "~> 3.1"
+  spec.add_runtime_dependency "mime-types-data", "~> 3.2016"
   spec.add_runtime_dependency "rack", "~> 2.0"
 
   spec.add_runtime_dependency "http", "~> 3.0"

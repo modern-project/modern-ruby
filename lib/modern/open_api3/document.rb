@@ -34,7 +34,7 @@ module Modern
           "openapi" => openapi,
           "info" => info.to_openapi3,
           "servers" => servers.map(&:to_openapi3),
-          "paths" => paths.map { |name, path| [name, path.to_openapi3] }.to_h
+          "paths" => paths.map { |name, path| [name, path.to_openapi3] }.to_h,
           "components" => components&.to_openapi3,
           "security" => security.map(&:to_openapi3),
           "tags" => tags.map(&:to_openapi3),

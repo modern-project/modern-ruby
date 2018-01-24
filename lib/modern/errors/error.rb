@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 module Modern
-  module Description
-    class APIInfo
-      
-    end
+  module Errors
+    class Error < RuntimeError; end
   end
 end

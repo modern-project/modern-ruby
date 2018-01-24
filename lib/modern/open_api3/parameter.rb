@@ -20,6 +20,7 @@ module Modern
       attr_accessor :style
       attr_accessor :explode
       attr_accessor :allow_reserved
+      # TODO: implement Schema object, not just a raw hash (too complex right now)
       attr_accessor :schema
       attr_accessor :example
       attr_reader :examples
@@ -43,7 +44,7 @@ module Modern
           "style" => style,
           "explode" => explode.nil? ? nil : !!explode,
           "allowReserved" => allow_reserved.nil? ? nil : !!allow_reserved,
-          "schema" => schema&.to_openapi3,
+          "schema" => schema,
           "example" => example,
           "examples" => examples.empty? ? nil : examples.map { |k, v| [k, v.to_openapi3] }.to_h,
 
