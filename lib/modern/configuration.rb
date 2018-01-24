@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-module Modern
-  class Configuration
-    attr_accessor :show_errors
+require 'modern/struct'
 
-    def initialize
-      # TODO: once Modern is done, figure out sane defaults.
-      @show_errors = true
-    end
+module Modern
+  class Configuration < Modern::Struct
+    # TODO: once Modern is done, figure out sane defaults.
+    attribute :show_errors, Modern::Types::Strict::Bool.default(true)
   end
 end

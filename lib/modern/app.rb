@@ -6,16 +6,16 @@ require "deep_dup"
 require "ice_nine"
 
 require "modern/configuration"
-require "modern/description/descriptor"
+require "modern/descriptor"
 
 require "modern/request"
 require "modern/response"
 
-require "modern/redirect"
 require "modern/app/error_handling"
-require "modern/app/routing"
+require "modern/app/router"
 
 require "modern/errors"
+require "modern/redirect"
 
 module Modern
   # `App` is the core of Modern. Some Rack application frameworks have you
@@ -28,17 +28,18 @@ module Modern
   # these routes.
   class App
     include Modern::App::ErrorHandling
-    include Modern::App::Routing
 
-    def initialize(descriptor, configuration)
+    def initialize(descriptor, configuration = Modern::Configuration.new)
       @descriptor = IceNine.deep_freeze(DeepDup.deep_dup(descriptor))
       @configuration = IceNine.deep_freeze(DeepDup.deep_dup(configuration))
+
+      @router = Modern::App::Router.new(routes: @descriptor.routes)
     end
 
     def call(env)
       request = Modern::Request.new(env)
       response = Modern::Response.new
-      route = find_route(request)
+      route = @router.resolve(request.request_method, request.path_info)
 
       begin
         raise Modern::Errors::NotFoundError if route.nil?
