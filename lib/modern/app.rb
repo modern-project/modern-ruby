@@ -8,9 +8,12 @@ require "ice_nine"
 require "modern/configuration"
 require "modern/description/descriptor"
 
+require "modern/request"
 require "modern/response"
 
+require "modern/redirect"
 require "modern/app/error_handling"
+require "modern/app/routing"
 
 require "modern/errors"
 
@@ -25,6 +28,7 @@ module Modern
   # these routes.
   class App
     include Modern::App::ErrorHandling
+    include Modern::App::Routing
 
     def initialize(descriptor, configuration)
       @descriptor = IceNine.deep_freeze(DeepDup.deep_dup(descriptor))
@@ -32,7 +36,7 @@ module Modern
     end
 
     def call(env)
-      request = Rack::Request.new(env)
+      request = Modern::Request.new(env)
       response = Modern::Response.new
       route = find_route(request)
 
@@ -46,15 +50,6 @@ module Modern
         handle_error(response, err)
         response.finish
       end
-    end
-
-    private
-
-    def find_route(_request)
-      # TODO: This is an O(n) matcher. We have options for improving this.
-      #       - Caching most recent N URL resolutions.
-      #       - Path trie. (Write the traversal iteratively.)
-      nil
     end
   end
 end
