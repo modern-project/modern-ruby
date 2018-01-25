@@ -12,7 +12,7 @@ require "modern/request"
 require "modern/response"
 
 require "modern/app/error_handling"
-require "modern/app/flat_router"
+require "modern/app/trie_router"
 
 require "modern/errors"
 require "modern/redirect"
@@ -33,7 +33,7 @@ module Modern
       @descriptor = IceNine.deep_freeze(DeepDup.deep_dup(descriptor))
       @configuration = IceNine.deep_freeze(DeepDup.deep_dup(configuration))
 
-      @router = Modern::App::FlatRouter.new(routes: @descriptor.routes)
+      @router = Modern::App::TrieRouter.new(routes: @descriptor.routes)
     end
 
     def call(env)

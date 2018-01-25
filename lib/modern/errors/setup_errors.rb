@@ -4,6 +4,8 @@ require_relative './error'
 
 module Modern
   module Errors
-    class Error < RuntimeError; end
+    class SetupError < Modern::Errors::Error; end
+
+    class RoutingError < SetupError; end
   end
 end

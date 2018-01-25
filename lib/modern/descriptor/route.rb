@@ -5,6 +5,7 @@ require "modern/struct"
 module Modern
   class Descriptor
     class Route < Modern::Struct
+      TEMPLATE_TOKEN = /\{.+\}/
       OPENAPI_CAPTURE = %r|/\{(?<name>.+)\}|
 
       attribute :id, Modern::Types::String
@@ -19,6 +20,20 @@ module Modern
 
       def path_matcher
         @path_matcher ||= Regexp.new("^" + path.gsub(OPENAPI_CAPTURE, "/(?<\\k<name>>[^/]+)") + "$")
+      end
+
+      def route_tokens
+        @route_tokens =
+          if @route_tokens
+            @route_tokens
+          else
+            p = path.sub(%r|^/|, "")
+
+            @route_tokens = path.sub(%r|^/|, "").split("/").map do |token|
+              TEMPLATE_TOKEN =~ token ? :templated : token
+            end
+          end
+        
       end
     end
   end
