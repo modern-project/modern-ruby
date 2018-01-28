@@ -5,7 +5,14 @@ require 'modern/app'
 describe Modern::App do
   context "an App with an empty Descriptor" do
     let(:descriptor) do
-      Modern::Descriptor::Core.new
+      Modern::Descriptor::Core.new(
+        info: Modern::OpenAPI3::Info.new(
+          title: "App Spec",
+          version: "1.0.0"
+        ),
+        routes: [],
+        security_schemes: []
+      )
     end
 
     let(:app) do

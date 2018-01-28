@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative "./base"
-require_relative "./oauth_flows"
+require "modern/open_api3/base"
+require "modern/open_api3/oauth_flows"
 
 module Modern
   module OpenAPI3

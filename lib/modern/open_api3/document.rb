@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative "./base"
-require_relative "./info"
+require "modern/open_api3/base"
+require "modern/open_api3/info"
 
 module Modern
   module OpenAPI3

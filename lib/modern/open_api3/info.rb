@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-require_relative "./base"
+require "modern/open_api3/base"
+require "modern/open_api3/contact"
+require "modern/open_api3/license"
 
 module Modern
   module OpenAPI3
@@ -10,18 +12,18 @@ module Modern
     class Info < Modern::OpenAPI3::Base
       include Modern::OpenAPI3::SpecificationExtensions
 
-      attr_accessor :title
-      attr_accessor :description
-      attr_accessor :terms_of_service
-      attr_accessor :contact
-      attr_accessor :license
-      attr_accessor :version
+      attribute :title, Modern::Types::Strict::String
+      attribute :description, Modern::Types::Strict::String.optional.default(nil)
+      attribute :terms_of_service, Modern::Types::Strict::String.optional.default(nil)
+      attribute :contact, Modern::Types.Instance(Modern::OpenAPI3::Contact).optional.default(nil)
+      attribute :license, Modern::Types.Instance(Modern::OpenAPI3::License).optional.default(nil)
+      attribute :version, Modern::Types::Strict::String
 
       def to_openapi3
         _ext_openapi3! \
           "title" => title,
           "description" => description,
-          "termsOfService" => :terms_of_service,
+          "termsOfService" => terms_of_service,
           "contact" => contact.to_openapi3,
           "license" => license.to_openapi3,
           "version" => version

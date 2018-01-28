@@ -2,6 +2,7 @@
 
 require "modern/struct"
 require "modern/descriptor/route"
+require "modern/descriptor/security_scheme"
 
 module Modern
   module Descriptor
@@ -9,25 +10,15 @@ module Modern
     # metadata. This class can recursively include itself to mount other
     # instances inside of itself; this is used by {Modern::App} to generate
     # OpenAPI documentation and design routing accordingly.
-    class Core
-      attr_reader :info
+    class Core < Modern::Struct
+      attribute :info, Modern::Types.Instance(Modern::OpenAPI3::Info)
 
-      attr_reader :routes
-      attr_reader :security_schemes
-
-      def initialize
-        @info = Modern::OpenAPI3::Info.new
-
-        @security_schemes = []
-        @routes = []
-      end
-
-      def add_route(route)
-        raise "`route` must be a Modern::Descriptor::Route." \
-          unless route.is_a?(Modern::Descriptor::Route)
-
-        @routes << route
-      end
+      attribute :routes, Modern::Types::Strict::Array.of(
+        Modern::Types.Instance(Modern::Descriptor::Route)
+      )
+      attribute :security_schemes, Modern::Types::Strict::Array.of(
+        Modern::Types.Instance(Modern::Descriptor::SecurityScheme)
+      )
     end
   end
 end

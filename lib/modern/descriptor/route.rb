@@ -17,7 +17,10 @@ module Modern
       attribute :description, Modern::Types::Strict::String.optional.default(nil)
 
       attribute :tags, Modern::Types::RouteTags.optional.default([])
-      # attribute :responses, Modern::Types::Strict::Array[Modern::Descriptor::Response].default[[]]
+      attribute :responses,
+                Modern::Types::Strict::Array.of(
+                  Modern::Types.Instance(Modern::Descriptor::Response)
+                ).default([])
 
       def path_matcher
         @path_matcher ||= Regexp.new("^" + path.gsub(OPENAPI_CAPTURE, "/(?<\\k<name>>[^/]+)") + "$")

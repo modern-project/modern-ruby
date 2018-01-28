@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "./base"
+require "modern/open_api3/base"
 
 module Modern
   module OpenAPI3
@@ -10,8 +10,8 @@ module Modern
     class License < Modern::OpenAPI3::Base
       include Modern::OpenAPI3::SpecificationExtensions
 
-      attr_accessor :name
-      attr_accessor :url
+      attribute :name, Modern::Types::Strict::String
+      attribute :url, Modern::Types::Strict::String.optional.default(nil)
 
       def to_openapi3
         _ext_openapi3! \

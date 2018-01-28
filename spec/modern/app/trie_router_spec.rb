@@ -53,24 +53,34 @@ shared_context "routing test" do
   end
 
   let(:descriptor) do
-    descriptor = Modern::Descriptor::Core.new
-
-    descriptor.add_route(get_root)
-    descriptor.add_route(get_minimal)
-    descriptor.add_route(get_subresource)
-    descriptor.add_route(get_subresource_override)
-    descriptor.add_route(get_subresource_deeper)
-
-    descriptor
+    Modern::Descriptor::Core.new(
+      info: Modern::OpenAPI3::Info.new(
+        title: "Trie Router Spec",
+        version: "1.0.0"
+      ),
+      routes: [
+        get_root,
+        get_minimal,
+        get_subresource,
+        get_subresource_override,
+        get_subresource_deeper
+      ],
+      security_schemes: []
+    )
   end
 
   let(:dupe_descriptor) do
-    descriptor = Modern::Descriptor::Core.new
-
-    descriptor.add_route(get_subresource_deeper)
-    descriptor.add_route(get_subresource_deeper2)
-
-    descriptor
+    Modern::Descriptor::Core.new(
+      info: Modern::OpenAPI3::Info.new(
+        title: "Trie Router Spec 2",
+        version: "1.0.0"
+      ),
+      routes: [
+        get_subresource_deeper,
+        get_subresource_deeper2
+      ],
+      security_schemes: []
+    )
   end
 
   let(:router) do
