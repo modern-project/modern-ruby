@@ -2,7 +2,7 @@
 
 require "modern/struct"
 require "modern/descriptor/route"
-require "modern/descriptor/security_scheme"
+require "modern/open_api3/security_scheme"
 
 module Modern
   module Descriptor
@@ -11,14 +11,10 @@ module Modern
     # instances inside of itself; this is used by {Modern::App} to generate
     # OpenAPI documentation and design routing accordingly.
     class Core < Modern::Struct
-      attribute :info, Modern::Types.Instance(Modern::OpenAPI3::Info)
+      attribute :info, Modern::OpenAPI3::Info::Type
 
-      attribute :routes, Modern::Types::Strict::Array.of(
-        Modern::Types.Instance(Modern::Descriptor::Route)
-      )
-      attribute :security_schemes, Modern::Types::Strict::Array.of(
-        Modern::Types.Instance(Modern::Descriptor::SecurityScheme)
-      )
+      attribute :routes, Modern::Types.array_of(Modern::Descriptor::Route::Type)
+      attribute :security_schemes, Modern::Types.array_of(Modern::OpenAPI3::SecurityScheme::Type)
     end
   end
 end

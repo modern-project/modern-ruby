@@ -8,6 +8,8 @@ module Modern
     #
     # https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#license-object
     class License < Modern::OpenAPI3::Base
+      Type = Modern::Types.Instance(self)
+
       include Modern::OpenAPI3::SpecificationExtensions
 
       attribute :name, Modern::Types::Strict::String

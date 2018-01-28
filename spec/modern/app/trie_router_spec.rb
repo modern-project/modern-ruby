@@ -8,7 +8,8 @@ shared_context "routing test" do
       id: "getRoot",
       http_method: :GET,
       path: "/",
-      summary: "The root of the app."
+      summary: "The root of the app.",
+      action: proc {}
     )
   end
 
@@ -16,7 +17,8 @@ shared_context "routing test" do
     Modern::Descriptor::Route.new(
       id: "getMinimal",
       http_method: :GET,
-      path: "/minimal"
+      path: "/minimal",
+      action: proc {}
     )
   end
 
@@ -24,7 +26,8 @@ shared_context "routing test" do
     Modern::Descriptor::Route.new(
       id: "getSubResource",
       http_method: :GET,
-      path: "/sub-resource/{sub_resource_id}"
+      path: "/sub-resource/{sub_resource_id}",
+      action: proc {}
     )
   end
 
@@ -32,7 +35,8 @@ shared_context "routing test" do
     Modern::Descriptor::Route.new(
       id: "getSubResource",
       http_method: :GET,
-      path: "/sub-resource/special"
+      path: "/sub-resource/special",
+      action: proc {}
     )
   end
 
@@ -40,7 +44,8 @@ shared_context "routing test" do
     Modern::Descriptor::Route.new(
       id: "getSubResourceThing",
       http_method: :GET,
-      path: "/sub-resource/{sub_resource_id}/thing"
+      path: "/sub-resource/{sub_resource_id}/thing",
+      action: proc {}
     )
   end
 
@@ -48,7 +53,8 @@ shared_context "routing test" do
     Modern::Descriptor::Route.new(
       id: "getSubResourceThing",
       http_method: :GET,
-      path: "/sub-resource/{not_a_sub_resource_id}/thing"
+      path: "/sub-resource/{not_a_sub_resource_id}/thing",
+      action: proc {}
     )
   end
 

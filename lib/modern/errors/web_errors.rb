@@ -12,11 +12,31 @@ module Modern
 
     class NotFoundError < WebError
       def initialize(msg = "Not found")
-        super
+        super(msg)
       end
 
       def status
         404
+      end
+    end
+
+    class UnsupportedMediaTypeError < WebError
+      def initialize(msg)
+        super(msg)
+      end
+
+      def status
+        415
+      end
+    end
+
+    class UnprocesseableEntity < WebError
+      def initialize(msg)
+        super(msg)
+      end
+
+      def status
+        422
       end
     end
   end

@@ -15,11 +15,20 @@ module Modern
     # rubocop:enable Style/MutableConstant
 
     HttpMethod = Types::Coercible::String.enum(*HTTP_METHODS)
-    HttpPath = Types::Strict::String
+    HttpPath = Types::Strict::String.constrained(
+      format: %r,/.*,
+    )
 
-    RouteTags = Types::Strict::Array.of(Types::Coercible::String)
+    MIMEType = Types::Strict::String.constrained(
+      format: %r,\w+/[-.\w]+(?:\+[-.\w]+)?,
+    )
+
     RouteAction = Instance(Proc)
 
     Type = Instance(Dry::Types::Definition)
+
+    def self.array_of(type)
+      Modern::Types::Strict::Array.of(type).default([])
+    end
   end
 end

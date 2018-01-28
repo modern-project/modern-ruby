@@ -4,7 +4,8 @@ require "modern/struct"
 
 module Modern
   module Descriptor
-    class SecurityScheme < Modern::Struct
+    class Schema < Modern::Struct
+      Type = Modern::Types.Instance(self)
     end
   end
 end
