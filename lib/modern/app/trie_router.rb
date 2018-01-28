@@ -2,7 +2,7 @@
 
 require 'diff/lcs'
 
-require_relative './router'
+require "modern/app/router"
 
 require 'modern/util/trie_node'
 

@@ -53,7 +53,7 @@ shared_context "routing test" do
   end
 
   let(:descriptor) do
-    descriptor = Modern::Descriptor.new
+    descriptor = Modern::Descriptor::Core.new
 
     descriptor.add_route(get_root)
     descriptor.add_route(get_minimal)
@@ -65,7 +65,7 @@ shared_context "routing test" do
   end
 
   let(:dupe_descriptor) do
-    descriptor = Modern::Descriptor.new
+    descriptor = Modern::Descriptor::Core.new
 
     descriptor.add_route(get_subresource_deeper)
     descriptor.add_route(get_subresource_deeper2)

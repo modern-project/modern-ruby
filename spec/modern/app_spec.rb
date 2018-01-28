@@ -5,7 +5,7 @@ require 'modern/app'
 describe Modern::App do
   context "an App with an empty Descriptor" do
     let(:descriptor) do
-      Modern::Descriptor.new
+      Modern::Descriptor::Core.new
     end
 
     let(:app) do

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative './error'
+require "modern/errors/error"
 
 module Modern
   module Errors
