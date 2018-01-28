@@ -1,5 +1,5 @@
 PATH
-  remote: .
+  remote: /Users/ed/Development/oapi3/modern
   specs:
     modern (0.1.0)
       deep_dup (~> 0.0.3)
@@ -12,13 +12,28 @@ PATH
       mime-types-data (~> 3.2016)
       rack (~> 2.0)
 
+PATH
+  remote: /Users/ed/Development/rack-ougai
+  specs:
+    rack-ougai (0.2.1)
+      ougai (~> 1.5)
+      rack (~> 2.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
-    ast (2.3.0)
-    coderay (1.1.2)
+    async (1.2.0)
+      nio4r
+      timers (~> 4.1)
+    async-container (0.2.2)
+      async (~> 1.0)
+    async-http (0.3.1)
+      async (~> 1.1)
+      async-io (~> 1.0)
+    async-io (1.0.0)
+      async (~> 1.0)
     concurrent-ruby (1.0.5)
     deep_dup (0.0.3)
     diff-lcs (1.3)
@@ -56,6 +71,12 @@ GEM
       dry-equalizer (~> 0.2)
       dry-logic (~> 0.4, >= 0.4.0)
       dry-types (~> 0.12.0)
+    falcon (0.4.2)
+      async-container (~> 0.1)
+      async-http (~> 0.3)
+      rack (>= 1.0)
+      samovar (~> 1.3)
+    hitimes (1.2.6)
     http (3.0.0)
       addressable (~> 2.3)
       http-cookie (~> 1.0)
@@ -67,65 +88,35 @@ GEM
     http_parser.rb (0.6.0)
     ice_nine (0.11.2)
     inflecto (0.0.2)
-    method_source (0.9.0)
+    mapping (1.1.1)
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
-    parallel (1.12.1)
-    parser (2.4.0.2)
-      ast (~> 2.3)
-    powerpack (0.1.1)
-    pry (0.11.3)
-      coderay (~> 1.1.0)
-      method_source (~> 0.9.0)
+    nio4r (2.2.0)
+    ougai (1.5.8)
     public_suffix (3.0.1)
+    puma (3.11.2)
     rack (2.0.3)
-    rack-test (0.8.2)
-      rack (>= 1.0, < 3)
-    rainbow (3.0.0)
-    rake (10.5.0)
-    rcodetools (0.8.5.0)
-    rspec (3.7.0)
-      rspec-core (~> 3.7.0)
-      rspec-expectations (~> 3.7.0)
-      rspec-mocks (~> 3.7.0)
-    rspec-core (3.7.1)
-      rspec-support (~> 3.7.0)
-    rspec-expectations (3.7.0)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.7.0)
-    rspec-mocks (3.7.0)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.7.0)
-    rspec-support (3.7.0)
-    rubocop (0.52.1)
-      parallel (~> 1.10)
-      parser (>= 2.4.0.2, < 3.0)
-      powerpack (~> 0.1)
-      rainbow (>= 2.2.2, < 4.0)
-      ruby-progressbar (~> 1.7)
-      unicode-display_width (~> 1.0, >= 1.0.1)
-    ruby-debug-ide (0.6.0)
-      rake (>= 0.8.1)
-    ruby-progressbar (1.9.0)
+    rainbow (2.2.2)
+      rake
+    rake (12.3.0)
+    samovar (1.8.0)
+      mapping (~> 1.0)
+      rainbow (~> 2.0)
+    timers (4.1.2)
+      hitimes
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.4)
-    unicode-display_width (1.3.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.16)
+  falcon
   modern!
-  pry
-  rack-test (~> 0.8)
-  rake (~> 10.0)
-  rcodetools
-  rspec (~> 3.7)
-  rubocop
-  ruby-debug-ide
+  puma
+  rack-ougai!
 
 BUNDLED WITH
    1.16.1

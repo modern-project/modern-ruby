@@ -19,5 +19,7 @@ module Modern
 
     RouteTags = Types::Strict::Array.of(Types::Coercible::String)
     RouteAction = Instance(Proc)
+
+    Type = Instance(Dry::Types::Definition)
   end
 end

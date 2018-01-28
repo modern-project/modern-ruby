@@ -1,7 +1,8 @@
 [*]
 root = true
-insert_final_newline = true
 tab_width = 2
 end_of_line = lf
 
 [*.rb]
+trim_trailing_whitespace = true
+insert_final_newline = true

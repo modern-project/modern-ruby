@@ -16,24 +16,16 @@ module Modern
       attribute :description, Modern::Types::Strict::String.optional.default(nil)
 
       attribute :tags, Modern::Types::RouteTags.optional.default([])
-      attribute :action, Modern::Types::RouteAction
 
       def path_matcher
         @path_matcher ||= Regexp.new("^" + path.gsub(OPENAPI_CAPTURE, "/(?<\\k<name>>[^/]+)") + "$")
       end
 
       def route_tokens
-        @route_tokens =
-          if @route_tokens
-            @route_tokens
-          else
-            p = path.sub(%r|^/|, "")
-
-            @route_tokens = path.sub(%r|^/|, "").split("/").map do |token|
-              TEMPLATE_TOKEN =~ token ? :templated : token
-            end
+        @route_tokens ||=
+          path.sub(%r|^/|, "").split("/").map do |token|
+            TEMPLATE_TOKEN =~ token ? :templated : token
           end
-        
       end
     end
   end

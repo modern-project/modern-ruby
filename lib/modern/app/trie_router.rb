@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'diff/lcs'
-require 'array_trie'
 
 require_relative './router'
 

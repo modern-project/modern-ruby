@@ -2,8 +2,12 @@ require 'modern/app'
 
 describe Modern::App do
   context "an App with an empty Descriptor" do
+    let (:descriptor) do
+      Modern::Descriptor.new
+    end
+
     let(:app) do
-      Modern::App.new(Modern::Descriptor.new)
+      Modern::App.new(descriptor)
     end
     
     it "404s when hitting / with no route" do

@@ -6,9 +6,7 @@ shared_context "routing test" do
       id: "getRoot",
       http_method: :GET,
       path: "/",
-      summary: "The root of the app.",
-      tags: [:meta],
-      action: ->(a, b) {}
+      summary: "The root of the app."
     )
   end
 
@@ -16,8 +14,7 @@ shared_context "routing test" do
     Modern::Descriptor::Route.new(
       id: "getMinimal",
       http_method: :GET,
-      path: "/minimal",
-      action: ->(a, b) {}
+      path: "/minimal"
     )
   end
 
@@ -25,8 +22,7 @@ shared_context "routing test" do
     Modern::Descriptor::Route.new(
       id: "getSubResource",
       http_method: :GET,
-      path: "/sub-resource/{sub_resource_id}",
-      action: ->(a, b) {}
+      path: "/sub-resource/{sub_resource_id}"
     )
   end
 
@@ -34,8 +30,7 @@ shared_context "routing test" do
     Modern::Descriptor::Route.new(
       id: "getSubResource",
       http_method: :GET,
-      path: "/sub-resource/special",
-      action: ->(a, b) {}
+      path: "/sub-resource/special"
     )
   end
 
@@ -43,8 +38,7 @@ shared_context "routing test" do
     Modern::Descriptor::Route.new(
       id: "getSubResourceThing",
       http_method: :GET,
-      path: "/sub-resource/{sub_resource_id}/thing",
-      action: ->(a, b) {}
+      path: "/sub-resource/{sub_resource_id}/thing"
     )
   end
 
@@ -52,8 +46,7 @@ shared_context "routing test" do
     Modern::Descriptor::Route.new(
       id: "getSubResourceThing",
       http_method: :GET,
-      path: "/sub-resource/{not_a_sub_resource_id}/thing",
-      action: ->(a, b) {}
+      path: "/sub-resource/{not_a_sub_resource_id}/thing"
     )
   end
 
