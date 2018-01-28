@@ -2,9 +2,7 @@ AllCops:
   TargetRubyVersion: 2.3
 
 Metrics/BlockLength:
-  Exclude:
-    - "**/*.gemspec"
-    - "**/Rakefile"
+  Enabled: false
 
 # Relaxed.Ruby.Style
 ## Version 2.1
@@ -33,7 +31,7 @@ Style/Documentation:
   Enabled: false
   StyleGuide: http://relaxed.ruby.style/#styledocumentation
 
-Layout/DotPosition:
+Style/DotPosition:
   Enabled: false
   StyleGuide: http://relaxed.ruby.style/#layoutdotposition
 
@@ -101,11 +99,11 @@ Style/SingleLineMethods:
   Enabled: false
   StyleGuide: http://relaxed.ruby.style/#stylesinglelinemethods
 
-Layout/SpaceBeforeBlockBraces:
+Style/SpaceBeforeBlockBraces:
   Enabled: false
   StyleGuide: http://relaxed.ruby.style/#layoutspacebeforeblockbraces
 
-Layout/SpaceInsideParens:
+Style/SpaceInsideParens:
   Enabled: false
   StyleGuide: http://relaxed.ruby.style/#layoutspaceinsideparens
 

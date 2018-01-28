@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 require 'modern/app'
 
 describe Modern::App do
   context "an App with an empty Descriptor" do
-    let (:descriptor) do
+    let(:descriptor) do
       Modern::Descriptor.new
     end
 
     let(:app) do
       Modern::App.new(descriptor)
     end
-    
+
     it "404s when hitting / with no route" do
       header "Accept", "application/json"
       get "/"
@@ -24,7 +26,7 @@ describe Modern::App do
       get "/"
 
       id1 = last_response.headers["X-Response-Id"]
-      
+
       header "Accept", "application/json"
       get "/"
 

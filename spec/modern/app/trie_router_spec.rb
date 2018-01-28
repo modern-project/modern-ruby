@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'modern/app/trie_router'
 
 shared_context "routing test" do
@@ -62,7 +64,7 @@ shared_context "routing test" do
     descriptor
   end
 
-  let :dupe_descriptor do
+  let(:dupe_descriptor) do
     descriptor = Modern::Descriptor.new
 
     descriptor.add_route(get_subresource_deeper)
@@ -71,11 +73,11 @@ shared_context "routing test" do
     descriptor
   end
 
-  let (:router) do
+  let(:router) do
     Modern::App::TrieRouter.new(routes: descriptor.routes)
   end
 
-  let (:dupe_router) do
+  let(:dupe_router) do
     Modern::App::TrieRouter.new(routes: dupe_descriptor.routes)
   end
 end
@@ -90,7 +92,6 @@ describe Modern::App::TrieRouter do
     it "instantiates" do
       router
     end
-
 
     it "404s on invalid routes" do
       Modern::Types::HTTP_METHODS.each do |m|

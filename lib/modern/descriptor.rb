@@ -27,7 +27,7 @@ module Modern
     def add_route(route)
       raise "`route` must be a Modern::Descriptor::Route." \
         unless route.is_a?(Modern::Descriptor::Route)
-      
+
       @routes << route
     end
   end

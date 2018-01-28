@@ -11,7 +11,7 @@ module Modern
 
       def _ext_openapi3!(h)
         @extensions.each_pair do |k, v|
-          h["x-#{k}"] = 
+          h["x-#{k}"] =
             case v
             when nil, String, Numeric
               v

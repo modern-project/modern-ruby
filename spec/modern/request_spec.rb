@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'modern/request'
 
 describe Modern::Request do

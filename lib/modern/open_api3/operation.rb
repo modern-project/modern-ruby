@@ -50,7 +50,6 @@ module Modern
               security.map(&:to_openapi3)
             end,
           "servers" => servers.empty? ? nil : servers.map(&:to_openapi3)
-
       end
     end
   end

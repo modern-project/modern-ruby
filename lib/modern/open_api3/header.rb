@@ -38,7 +38,7 @@ module Modern
           "required" => required.nil? ? nil : !!required,
           "deprecated" => deprecated.nil? ? nil : !!deprecated,
           "allowEmptyValue" => allow_empty_value.nil? ? nil : !!allow_empty_value,
-          
+
           "style" => style,
           "explode" => explode.nil? ? nil : !!explode,
           "allowReserved" => allow_reserved.nil? ? nil : !!allow_reserved,
