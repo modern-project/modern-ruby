@@ -14,6 +14,8 @@ module Modern
     HTTP_METHODS = %w[GET POST PUT DELETE PATCH HEAD OPTIONS TRACE]
     # rubocop:enable Style/MutableConstant
 
+    Type = Instance(Dry::Types::Definition)
+
     HttpMethod = Types::Coercible::String.enum(*HTTP_METHODS)
     HttpPath = Types::Strict::String.constrained(
       format: %r,/.*,
@@ -25,7 +27,9 @@ module Modern
 
     RouteAction = Instance(Proc)
 
-    Type = Instance(Dry::Types::Definition)
+    ParameterStyle = Types::Coercible::String.enum(:matrix, :label, :form,
+                                                   :simple, :space_delimited,
+                                                   :pipe_delimited, :deep_object)
 
     def self.array_of(type)
       Modern::Types::Strict::Array.of(type).default([])

@@ -22,8 +22,9 @@ module Modern
       end
 
       attribute :http_code, Types::HttpCode
-      attribute :description, Modern::Types::Strict::String.optional
-      attribute :headers, Modern::Types::Array.of(Header::Type)
+      attribute :description, Modern::Types::Strict::String.optional.default(nil)
+      attribute :headers, Modern::Types.array_of(Header::Type)
+      attribute :content, Modern::Types.array_of(Content::Type)
     end
   end
 end

@@ -37,12 +37,14 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "mime-types-data", "~> 3.2016"
   spec.add_runtime_dependency "rack", "~> 2.0"
 
+  spec.add_runtime_dependency "addressable", "~> 2.5"
   spec.add_runtime_dependency "http", "~> 3.0"
 
   spec.add_runtime_dependency "deep_dup", "~> 0.0.3"
   spec.add_runtime_dependency "diff-lcs", "~> 1.3"
   spec.add_runtime_dependency "dry-struct", "~> 0.4"
   spec.add_runtime_dependency "dry-validation", "~> 0.11"
-  spec.add_runtime_dependency "snake_camel", "~> 1.1"
   spec.add_runtime_dependency "ice_nine", "~> 0.11.2"
+  spec.add_runtime_dependency "ougai", "~> 1.5"
+  spec.add_runtime_dependency "snake_camel", "~> 1.1"
 end

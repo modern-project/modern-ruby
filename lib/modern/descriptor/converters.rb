@@ -1,6 +1,7 @@
 module Modern
   module Descriptor
-    # An input converter takes a raw HTTP request body and returns a Ruby
+    # An input converter takes a raw HTTP request body and a
+    # {Modern::Types::Type} (if one has been specified) and returns a Ruby
     # object. A JSON converter would return a hash, for example; a converter for
     # 'image/* might return an `IO` object. The results of this converter will
     # be passed to a route action.

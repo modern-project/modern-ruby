@@ -10,6 +10,16 @@ module Modern
       end
     end
 
+    class BadRequestError < WebError
+      def initialize(msg = "Bad request")
+        super(msg)
+      end
+
+      def status
+        400
+      end
+    end
+
     class NotFoundError < WebError
       def initialize(msg = "Not found")
         super(msg)

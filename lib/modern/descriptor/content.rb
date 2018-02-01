@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "modern/struct"
+require "modern/descriptor/schema"
 
 module Modern
   module Descriptor

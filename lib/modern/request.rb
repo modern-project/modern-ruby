@@ -9,10 +9,14 @@ module Modern
     LOCAL_REQUEST_STORE = {}
     # rubocop:enable Style/MutableConstant
 
-    def initialize(env)
+    attr_reader :logger
+
+    def initialize(env, logger)
       super(env)
 
       env["HTTP_X_REQUEST_ID"] ||= SecureRandom.uuid
+
+      @logger = logger.child(request_id: request_id)
     end
 
     def request_id
