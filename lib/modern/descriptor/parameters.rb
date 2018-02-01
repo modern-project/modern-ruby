@@ -52,7 +52,18 @@ module Modern
       class Cookie < Base
         Type = Modern::Types.Instance(self)
 
+        attribute :cookie_name, Modern::Types::Coercible::String
         attribute :style, Modern::Types::Coercible::String.default("form").enum("form")
+
+        def friendly_name
+          cookie_name
+        end
+
+        private
+
+        def do_retrieve(request)
+          request.cookies[cookie_name]
+        end
       end
 
       class Header < Base

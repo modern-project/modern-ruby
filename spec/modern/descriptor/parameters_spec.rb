@@ -86,6 +86,49 @@ shared_context "parameter test" do
     )
   end
 
+  let(:cookie_route) do
+    Modern::Descriptor::Route.new(
+      id: "getCookie",
+      http_method: :GET,
+      path: "/cookie-form",
+      summary: "A cookie parameter",
+      parameters: [
+        Modern::Descriptor::Parameters::Cookie.new(
+          name: "a",
+          cookie_name: "My-Cookie-A",
+          type: Modern::Types::Coercible::Int,
+          required: true
+        ),
+        Modern::Descriptor::Parameters::Cookie.new(
+          name: "b",
+          cookie_name: "My-Cookie-B",
+          type: Modern::Types::Coercible::String,
+          required: true
+        ),
+        Modern::Descriptor::Parameters::Cookie.new(
+          name: "c",
+          cookie_name: "My-Cookie-C",
+          type: Modern::Types::Coercible::Int,
+          required: false
+        )
+      ],
+      responses: [
+        Modern::Descriptor::Response.new(
+          http_code: :default,
+          content: [
+            Modern::Descriptor::Content.new(
+              media_type: "application/json"
+            )
+          ]
+        )
+      ],
+      action:
+        proc do |req, res, params, body|
+          res.json(params)
+        end
+    )
+  end
+
   let(:descriptor) do
     Modern::Descriptor::Core.new(
       info: Modern::OpenAPI3::Info.new(
@@ -94,7 +137,8 @@ shared_context "parameter test" do
       ),
       routes: [
         query_route,
-        header_route
+        header_route,
+        cookie_route
       ],
       security_schemes: []
     )
@@ -154,8 +198,26 @@ describe Modern::Descriptor::Parameters do
 
     end
 
-    it "parses a cookie parameter" do
+    it "parses a form-encoded cookie parameter" do
+      clear_cookies
+      set_cookie "My-Cookie-A=5"
+      set_cookie "My-Cookie-B=something"
+      header "Accept", "application/json"
+      get "/cookie-form"
 
+      expect(last_response.headers["Content-Type"]).to eq("application/json")
+      expect(JSON.parse(last_response.body)).to eq("a" => 5, "b" => "something", "c" => nil)
+      expect(last_response.status).to eq(200)
+    end
+
+    it "fails when cookie parameters are required and not available" do
+      clear_cookies
+      set_cookie "My-Cookie-A=5"
+      header "Accept", "application/json"
+      get "/cookie-form"
+
+      expect(last_response.body).to include("'My-Cookie-B'")
+      expect(last_response.status).to eq(400)
     end
   end
 end
