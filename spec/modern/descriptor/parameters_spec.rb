@@ -144,8 +144,6 @@ shared_context "parameter test" do
     )
   end
 
-  let(:app) do
-    Modern::App::TrieRouter.new(routes: descriptor.routes)
   end
 
   let(:app) do
