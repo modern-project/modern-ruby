@@ -42,6 +42,8 @@ module Modern
       @logger = logger
 
       @router = Modern::App::TrieRouter.new(routes: @descriptor.routes)
+      @input_converters = @descriptor.input_converters.map { |c| [c.media_type.downcase.strip, c] }.to_h
+      @output_converters = @descriptor.output_converters.map { |c| [c.media_type.downcase.strip, c] }.to_h
     end
 
     def call(env)

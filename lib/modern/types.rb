@@ -14,7 +14,7 @@ module Modern
     HTTP_METHODS = %w[GET POST PUT DELETE PATCH HEAD OPTIONS TRACE]
     # rubocop:enable Style/MutableConstant
 
-    Type = Instance(Dry::Types::Definition)
+    Type = Instance(Dry::Types::Definition) | Instance(Dry::Types::Constrained)
 
     HttpMethod = Types::Coercible::String.enum(*HTTP_METHODS)
     HttpPath = Types::Strict::String.constrained(

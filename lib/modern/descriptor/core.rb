@@ -2,6 +2,7 @@
 
 require "modern/struct"
 require "modern/descriptor/route"
+require "modern/descriptor/converters"
 require "modern/open_api3/security_scheme"
 
 module Modern
@@ -15,6 +16,9 @@ module Modern
 
       attribute :routes, Modern::Types.array_of(Modern::Descriptor::Route::Type)
       attribute :security_schemes, Modern::Types.array_of(Modern::OpenAPI3::SecurityScheme::Type)
+
+      attribute :input_converters, Modern::Types.array_of(Modern::Descriptor::Converters::Input::Base::Type)
+      attribute :output_converters, Modern::Types.array_of(Modern::Descriptor::Converters::Output::Base::Type)
     end
   end
 end

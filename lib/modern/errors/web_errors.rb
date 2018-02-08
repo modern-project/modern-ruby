@@ -30,8 +30,18 @@ module Modern
       end
     end
 
+    class NotAcceptableError < WebError
+      def initialize(msg = "Not acceptable (no servable content types in Accept header)")
+        super(msg)
+      end
+
+      def status
+        406
+      end
+    end
+
     class UnsupportedMediaTypeError < WebError
-      def initialize(msg)
+      def initialize(msg = "Unrecognized request Content-Type.")
         super(msg)
       end
 
@@ -40,8 +50,8 @@ module Modern
       end
     end
 
-    class UnprocesseableEntity < WebError
-      def initialize(msg)
+    class UnprocessableEntity < WebError
+      def initialize(msg = "Recognized content-type of body, but could not parse it.")
         super(msg)
       end
 

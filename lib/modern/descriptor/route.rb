@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "set"
+
 require "modern/struct"
 
 require "modern/descriptor/response"
@@ -35,6 +37,9 @@ module Modern
       attr_reader :path_matcher
       attr_reader :route_tokens
 
+      attr_reader :content_types
+      attr_reader :responses_by_code
+
       def initialize(fields)
         super(fields)
 
@@ -43,6 +48,16 @@ module Modern
           path.sub(%r|^/|, "").split("/").map do |token|
             TEMPLATE_TOKEN =~ token ? :templated : token
           end
+
+        @content_types = responses.map { |r| r.content.map(&:media_type) }.flatten.to_set.freeze
+        @responses_by_code = responses.map { |r| [r.http_code, r] }.to_h.freeze
+
+        raise "Cannot create a Route without a Response where http_code = :default." \
+          unless @responses_by_code.key?(:default)
+
+        nondefault_content = @content_types - @responses_by_code[:default].content.map(&:media_type).to_set
+        raise "Missing content types in default HTTP response for #{id}: #{nondefault_content.join(', ')}" \
+            unless nondefault_content.empty?
       end
     end
   end
