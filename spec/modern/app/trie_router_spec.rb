@@ -9,6 +9,16 @@ shared_context "routing test" do
       http_method: :GET,
       path: "/",
       summary: "The root of the app.",
+      responses: [
+        Modern::Descriptor::Response.new(
+          http_code: :default,
+          content: [
+            Modern::Descriptor::Content.new(
+              media_type: "application/json"
+            )
+          ]
+        )
+      ],
       action: proc {}
     )
   end
@@ -18,6 +28,16 @@ shared_context "routing test" do
       id: "getMinimal",
       http_method: :GET,
       path: "/minimal",
+      responses: [
+        Modern::Descriptor::Response.new(
+          http_code: :default,
+          content: [
+            Modern::Descriptor::Content.new(
+              media_type: "application/json"
+            )
+          ]
+        )
+      ],
       action: proc {}
     )
   end
@@ -27,6 +47,16 @@ shared_context "routing test" do
       id: "getSubResource",
       http_method: :GET,
       path: "/sub-resource/{sub_resource_id}",
+      responses: [
+        Modern::Descriptor::Response.new(
+          http_code: :default,
+          content: [
+            Modern::Descriptor::Content.new(
+              media_type: "application/json"
+            )
+          ]
+        )
+      ],
       action: proc {}
     )
   end
@@ -36,6 +66,16 @@ shared_context "routing test" do
       id: "getSubResource",
       http_method: :GET,
       path: "/sub-resource/special",
+      responses: [
+        Modern::Descriptor::Response.new(
+          http_code: :default,
+          content: [
+            Modern::Descriptor::Content.new(
+              media_type: "application/json"
+            )
+          ]
+        )
+      ],
       action: proc {}
     )
   end
@@ -45,6 +85,16 @@ shared_context "routing test" do
       id: "getSubResourceThing",
       http_method: :GET,
       path: "/sub-resource/{sub_resource_id}/thing",
+      responses: [
+        Modern::Descriptor::Response.new(
+          http_code: :default,
+          content: [
+            Modern::Descriptor::Content.new(
+              media_type: "application/json"
+            )
+          ]
+        )
+      ],
       action: proc {}
     )
   end
@@ -54,6 +104,16 @@ shared_context "routing test" do
       id: "getSubResourceThing",
       http_method: :GET,
       path: "/sub-resource/{not_a_sub_resource_id}/thing",
+      responses: [
+        Modern::Descriptor::Response.new(
+          http_code: :default,
+          content: [
+            Modern::Descriptor::Content.new(
+              media_type: "application/json"
+            )
+          ]
+        )
+      ],
       action: proc {}
     )
   end

@@ -38,6 +38,7 @@ shared_context "parameter test" do
       ],
       action:
         proc do |req, res, params, body|
+          res.bypass!
           res.json(params)
         end
     )
@@ -81,6 +82,7 @@ shared_context "parameter test" do
       ],
       action:
         proc do |req, res, params, body|
+          res.bypass!
           res.json(params)
         end
     )
@@ -124,6 +126,7 @@ shared_context "parameter test" do
       ],
       action:
         proc do |req, res, params, body|
+          res.bypass!
           res.json(params)
         end
     )
@@ -161,6 +164,7 @@ shared_context "parameter test" do
       ],
       action:
         proc do |req, res, params, body|
+          res.bypass!
           res.json(params)
         end
     )
@@ -178,7 +182,13 @@ shared_context "parameter test" do
         cookie_route,
         path_route
       ],
-      security_schemes: []
+      security_schemes: [],
+      input_converters: [
+        Modern::Descriptor::Converters::Input::JSON
+      ],
+      output_converters: [
+        Modern::Descriptor::Converters::Output::JSON
+      ]
     )
   end
 
@@ -229,6 +239,7 @@ describe Modern::Descriptor::Parameters do
     end
 
     it "parses a path parameter" do
+      header "Accept", "application/json"
       get "/path-simple/5/something/10"
 
       expect(last_response.headers["Content-Type"]).to eq("application/json")

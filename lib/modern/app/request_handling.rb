@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
-require 'content-type'
-
 require 'modern/errors/web_errors'
+
+require 'modern/app/request_handling/input_handling'
+require 'modern/app/request_handling/output_handling'
 
 module Modern
   class App
     module RequestHandling
+      include Modern::App::RequestHandling::InputHandling
+      include Modern::App::RequestHandling::OutputHandling
+
       private
 
       # Encapsulates the full request handler for the app, given the route from
@@ -51,7 +55,8 @@ module Modern
                     "no content for '#{output_converter.media_type}' for code #{route_code}"
             end
 
-            validate_output!(route_content.schema, retval) unless route_content.schema.nil?
+            validate_output!(route_content.schema, retval) \
+              if @configuration.validate_responses && !route_content.schema.nil?
 
             response.headers["Content-Type"] = output_converter.media_type
             response.write(output_converter.converter.call(route_content.schema, retval))
@@ -60,59 +65,6 @@ module Modern
           route_logger.error(err)
           raise
         end
-      end
-
-      def parse_parameters(request, route)
-        match = route.path_matcher.match(request.path)
-        route_captures = match.names.map{ |n| [n.to_s, match[n]] }.to_h
-
-        route.parameters.map { |p| [p.name, p.retrieve(request, route_captures)] }.to_h
-      end
-
-      def parse_request_body(request, route)
-        input_converter = determine_input_converter(request)
-        raise Modern::Errors::UnsupportedMediaTypeError if input_converter.nil?
-
-        raw = input_converter.converter.call(request.body)
-
-        t = route.request_body.type
-
-        if raw.nil?
-          nil
-        elsif t.nil?
-          raw
-        else
-          begin
-            if raw.is_a?(Hash)
-              raw = raw.map { |k, v| [k.respond_to?(:to_sym) ? k.to_sym : k, v] }.to_h
-            end
-
-            t[raw]
-          rescue Dry::Types::ConstraintError => err
-            raise Modern::Errors::UnprocessableEntity, err.message
-          rescue Dry::Types::MissingKeyError => err
-            raise Modern::Errors::UnprocessableEntity, err.message
-          rescue StandardError => err
-            request.logger.warn "Unprocessable body for route '#{route.id}'", err
-            raise Modern::Errors::UnprocessableEntity
-          end
-        end
-      end
-
-      def determine_input_converter(request)
-        # RFC 2616; you MAY sniff content but SHOULD return application/octet-stream
-        # if the input Content-Type remains unknown. However, it seems like Rack may
-        # default to application/x-www-form-urlencoded; Rack::Test definitely does.
-        content_type = request.content_type.downcase.strip
-        @input_converters[content_type]
-      end
-
-      def determine_output_converter(request, route)
-        accept_header = request.env["HTTP_ACCEPT"]
-        requested_types = Modern::Util::HeaderParsing.parse_accept_header(accept_header) \
-          .select { |c| route.content_types.include?(c) }
-
-        @output_converters[requested_types.find { |c| @output_converters.key?(c) }]
       end
 
       def validate_output!(_schema, _retval)
