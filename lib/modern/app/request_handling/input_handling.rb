@@ -39,7 +39,8 @@ module Modern
             rescue Dry::Types::MissingKeyError => err
               raise Modern::Errors::UnprocessableEntity, err.message
             rescue StandardError => err
-              request.logger.warn "Unprocessable body for route '#{route.id}'", err
+              request.logger.warn("Unprocessable body for route '#{route.id}'", err) \
+                if @configuration.log_input_converter_errors
               raise Modern::Errors::UnprocessableEntity
             end
           end

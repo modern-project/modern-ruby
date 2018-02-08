@@ -90,7 +90,10 @@ shared_context "request body test" do
   end
 
   let(:app) do
-    Modern::App.new(descriptor)
+    cfg = Modern::Configuration.new(
+      log_input_converter_errors: false
+    )
+    Modern::App.new(descriptor, cfg)
   end
 end
 
