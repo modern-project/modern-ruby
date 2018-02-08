@@ -6,6 +6,12 @@ require 'json'
 
 module Modern
   class Response < Rack::Response
+    attr_reader :bypass
+
+    def bypass!
+      @bypass = true
+    end
+
     def json(object, pretty: false)
       headers["Content-Type"] = "application/json"
 

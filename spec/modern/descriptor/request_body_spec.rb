@@ -3,12 +3,12 @@
 require 'modern/app'
 
 shared_context "request body test" do
-  let(:required_body_route) do
+  let(:required_body_hash_route) do
     Modern::Descriptor::Route.new(
-      id: "postRequiredBody",
+      id: "postRequiredBodyHash",
       http_method: :POST,
-      path: "/required-body",
-      summary: "when the request body is required",
+      path: "/required-body-hash",
+      summary: "when the request body is required for a hash",
       parameters: [],
       responses: [
         Modern::Descriptor::Response.new(
@@ -30,8 +30,41 @@ shared_context "request body test" do
           required: true
         ),
       action:
-        proc do |_req, res, _params, body|
-          res.json(body)
+        proc do |_req, _res, _params, body|
+          body
+        end
+    )
+  end
+
+  let(:required_body_struct_route) do
+    Modern::Descriptor::Route.new(
+      id: "postRequiredBodyStruct",
+      http_method: :POST,
+      path: "/required-body-struct",
+      summary: "when the request body is required for a struct",
+      parameters: [],
+      responses: [
+        Modern::Descriptor::Response.new(
+          http_code: :default,
+          content: [
+            Modern::Descriptor::Content.new(
+              media_type: "application/json"
+            )
+          ]
+        )
+      ],
+      request_body:
+        Modern::Descriptor::RequestBody.new(
+          type: Class.new(Modern::Struct) do
+            attribute :a, Modern::Types::Strict::Int
+            attribute :b, Modern::Types::Coercible::Int
+            attribute :c, Modern::Types::Strict::Int.optional.default(nil)
+          end,
+          required: true
+        ),
+      action:
+        proc do |_req, _res, _params, body|
+          body
         end
     )
   end
@@ -43,7 +76,8 @@ shared_context "request body test" do
         version: "1.0.0"
       ),
       routes: [
-        required_body_route
+        required_body_hash_route,
+        required_body_struct_route
       ],
       security_schemes: [],
       input_converters: [
@@ -67,7 +101,7 @@ describe Modern::Descriptor::RequestBody do
     it "fails with a 415 if no input converter available" do
       header "Accept", "application/json" # output should never be hit
       header "Content-Type", "application/prs.never-available"
-      post "/required-body"
+      post "/required-body-hash"
 
       expect(last_response.status).to eq(415)
     end
@@ -75,7 +109,7 @@ describe Modern::Descriptor::RequestBody do
     it "fails with a 406 if no output converter available" do
       header "Accept", "application/prs.never-available"
       header "Content-Type", "application/json"
-      post "/required-body"
+      post "/required-body-hash"
 
       expect(last_response.status).to eq(406)
     end
@@ -83,23 +117,41 @@ describe Modern::Descriptor::RequestBody do
     it "fails with a 400 if a required request body is not provided" do
       header "Accept", "application/json"
       header "Content-Type", "application/json"
-      post "/required-body"
+      post "/required-body-hash"
 
       expect(last_response.status).to eq(400)
     end
 
-    it "fails with a 422 if the required request body is not of the right schema" do
+    it "fails with a 422 if the required request body is not of the right hash schema" do
       header "Accept", "application/json"
       header "Content-Type", "application/json"
-      post "/required-body", {}.to_json
+      post "/required-body-hash", {}.to_json
 
       expect(last_response.status).to eq(422)
     end
 
-    it "follows the request happy path" do
+    it "follows the request happy path for hash schema" do
       header "Accept", "application/json"
       header "Content-Type", "application/json"
-      post "/required-body", {a: 5, b: "10"}.to_json
+      post "/required-body-hash", {a: 5, b: "10"}.to_json
+
+      expect(last_response.headers["Content-Type"]).to eq("application/json")
+      expect(JSON.parse(last_response.body)).to eq("a" => 5, "b" => 10)
+      expect(last_response.status).to eq(200)
+    end
+
+    it "fails with a 422 if the required request body is not of the right struct" do
+      header "Accept", "application/json"
+      header "Content-Type", "application/json"
+      post "/required-body-struct", {}.to_json
+
+      expect(last_response.status).to eq(422)
+    end
+
+    it "follows the request happy path for struct" do
+      header "Accept", "application/json"
+      header "Content-Type", "application/json"
+      post "/required-body-struct", {a: 5, b: "10"}.to_json
 
       expect(last_response.headers["Content-Type"]).to eq("application/json")
       expect(JSON.parse(last_response.body)).to eq("a" => 5, "b" => 10)

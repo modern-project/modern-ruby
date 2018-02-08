@@ -25,6 +25,14 @@ module Modern
       attribute :description, Modern::Types::Strict::String.optional.default(nil)
       attribute :headers, Modern::Types.array_of(Header::Type)
       attribute :content, Modern::Types.array_of(Content::Type)
+
+      attr_reader :content_by_type
+
+      def initialize(fields)
+        super
+
+        @content_by_type = content.map { |c| [c.media_type, c] }.to_h.freeze
+      end
     end
   end
 end

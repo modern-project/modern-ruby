@@ -56,8 +56,7 @@ module Modern
       begin
         raise Modern::Errors::NotFoundError if route.nil?
 
-        ret = process_request(request, response, route)
-
+        process_request(request, response, route)
         response.finish
       rescue Modern::Redirect => redirect
         response.redirect(redirect.target, redirect.status)

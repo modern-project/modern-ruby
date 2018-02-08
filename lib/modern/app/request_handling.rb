@@ -36,7 +36,26 @@ module Modern
           if body.nil? && route.request_body&.required
 
         begin
-          route.action.call(request, response, params, body)
+          retval = route.action.call(request, response, params, body)
+
+          # Leaving a hole for people to bypass responses and dump whatever
+          # they want through the underlying `Rack::Response`.
+          unless response.bypass
+            route_code = route.responses_by_code.key?(response.status) ? response.status : :default
+
+            route_response = route.responses_by_code[route_code]
+            route_content = route_response.content_by_type[output_converter.media_type]
+
+            if route_content.nil?
+              raise Modern::Errors::InternalServiceError,
+                    "no content for '#{output_converter.media_type}' for code #{route_code}"
+            end
+
+            validate_output!(route_content.schema, retval) unless route_content.schema.nil?
+
+            response.headers["Content-Type"] = output_converter.media_type
+            response.write(output_converter.converter.call(route_content.schema, retval))
+          end
         rescue StandardError => err
           route_logger.error(err)
           raise
@@ -56,9 +75,11 @@ module Modern
 
         raw = input_converter.converter.call(request.body)
 
+        t = route.request_body.type
+
         if raw.nil?
           nil
-        elsif route.request_body.type.nil?
+        elsif t.nil?
           raw
         else
           begin
@@ -66,7 +87,7 @@ module Modern
               raw = raw.map { |k, v| [k.respond_to?(:to_sym) ? k.to_sym : k, v] }.to_h
             end
 
-            route.request_body.type[raw]
+            t[raw]
           rescue Dry::Types::ConstraintError => err
             raise Modern::Errors::UnprocessableEntity, err.message
           rescue Dry::Types::MissingKeyError => err
@@ -92,6 +113,10 @@ module Modern
           .select { |c| route.content_types.include?(c) }
 
         @output_converters[requested_types.find { |c| @output_converters.key?(c) }]
+      end
+
+      def validate_output!(_schema, _retval)
+        nil
       end
     end
   end

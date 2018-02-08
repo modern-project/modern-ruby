@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'dry/types'
+require 'dry/struct'
 
 require 'ice_nine'
 
@@ -14,7 +15,8 @@ module Modern
     HTTP_METHODS = %w[GET POST PUT DELETE PATCH HEAD OPTIONS TRACE]
     # rubocop:enable Style/MutableConstant
 
-    Type = Instance(Dry::Types::Definition) | Instance(Dry::Types::Constrained)
+    Type = Instance(Dry::Types::Type)
+    Struct = Instance(Dry::Struct)
 
     HttpMethod = Types::Coercible::String.enum(*HTTP_METHODS)
     HttpPath = Types::Strict::String.constrained(
