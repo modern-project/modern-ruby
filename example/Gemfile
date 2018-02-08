@@ -2,9 +2,8 @@
 
 source "https://rubygems.org"
 
-gem "falcon"
 gem "puma"
 
-gem "rack-ougai", path: "/Users/ed/Development/rack-ougai"
+gem "rack-ougai"
 
 gem "modern", path: File.expand_path("#{__dir__}}/..")
