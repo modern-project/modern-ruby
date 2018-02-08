@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "modern/struct"
-require "modern/descriptor/schema"
 require "modern/descriptor/content"
 
 module Modern
@@ -18,7 +17,7 @@ module Modern
 
         attribute :name, Modern::Types::Strict::String
         attribute :description, Modern::Types::Strict::String.optional.default(nil)
-        attribute :schema, Modern::Descriptor::Schema::Type.optional.default(nil)
+        attribute :schema, Modern::Types::Type.optional.default(nil)
       end
 
       attribute :http_code, Types::HttpCode

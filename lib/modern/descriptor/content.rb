@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "modern/struct"
-require "modern/descriptor/schema"
 
 module Modern
   module Descriptor
@@ -9,7 +8,7 @@ module Modern
       Type = Modern::Types.Instance(self)
 
       attribute :media_type, Modern::Types::MIMEType
-      attribute :schema, Modern::Descriptor::Schema::Type.optional.default(nil)
+      attribute :schema, (Modern::Types::Type | Modern::Types::Struct).optional.default(nil)
     end
   end
 end

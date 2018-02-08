@@ -34,9 +34,9 @@ module Modern
               end
 
               t[raw]
-            rescue Dry::Types::ConstraintError => err
-              raise Modern::Errors::UnprocessableEntity, err.message
-            rescue Dry::Types::MissingKeyError => err
+            rescue Dry::Types::ConstraintError,
+                   Dry::Types::MissingKeyError,
+                   Dry::Struct::Error => err
               raise Modern::Errors::UnprocessableEntity, err.message
             rescue StandardError => err
               request.logger.warn("Unprocessable body for route '#{route.id}'", err) \

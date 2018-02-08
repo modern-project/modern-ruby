@@ -55,8 +55,7 @@ module Modern
                     "no content for '#{output_converter.media_type}' for code #{route_code}"
             end
 
-            validate_output!(route_content.schema, retval) \
-              if @configuration.validate_responses && !route_content.schema.nil?
+            retval = validate_output!(route_content, retval, request, route)
 
             response.headers["Content-Type"] = output_converter.media_type
             response.write(output_converter.converter.call(route_content.schema, retval))
@@ -65,10 +64,6 @@ module Modern
           route_logger.error(err)
           raise
         end
-      end
-
-      def validate_output!(_schema, _retval)
-        nil
       end
     end
   end

@@ -17,6 +17,25 @@ module Modern
 
           @output_converters[requested_types.find { |c| @output_converters.key?(c) }]
         end
+
+        def validate_output!(content, retval, request, route)
+          if content.schema.nil?
+            retval
+          else
+            content.schema[retval]
+          end
+        rescue Dry::Types::ConstraintError,
+               Dry::Types::MissingKeyError,
+               Dry::Struct::Error => err
+          if @configuration.validate_responses != 'no'
+            request.logger.error "Bad validation for response to #{route.id}, " \
+                                "content type #{content.media_type}", err
+
+            raise err if @configuration.validate_responses == 'error'
+          end
+
+          retval
+        end
       end
     end
   end

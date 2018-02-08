@@ -90,10 +90,8 @@ shared_context "request body test" do
   end
 
   let(:app) do
-    cfg = Modern::Configuration.new(
-      log_input_converter_errors: false
-    )
-    Modern::App.new(descriptor, cfg)
+    cfg = Modern::Configuration.new
+    Modern::App.new(descriptor, cfg, Ougai::Logger.new(StringIO.new))
   end
 end
 
@@ -125,40 +123,44 @@ describe Modern::Descriptor::RequestBody do
       expect(last_response.status).to eq(400)
     end
 
-    it "fails with a 422 if the required request body is not of the right hash schema" do
-      header "Accept", "application/json"
-      header "Content-Type", "application/json"
-      post "/required-body-hash", {}.to_json
+    context "hash schema" do
+      it "fails with a 422 if the required request body is invalid" do
+        header "Accept", "application/json"
+        header "Content-Type", "application/json"
+        post "/required-body-hash", {}.to_json
 
-      expect(last_response.status).to eq(422)
+        expect(last_response.status).to eq(422)
+      end
+
+      it "follows the happy path" do
+        header "Accept", "application/json"
+        header "Content-Type", "application/json"
+        post "/required-body-hash", {a: 5, b: "10"}.to_json
+
+        expect(last_response.headers["Content-Type"]).to eq("application/json")
+        expect(JSON.parse(last_response.body)).to eq("a" => 5, "b" => 10)
+        expect(last_response.status).to eq(200)
+      end
     end
 
-    it "follows the request happy path for hash schema" do
-      header "Accept", "application/json"
-      header "Content-Type", "application/json"
-      post "/required-body-hash", {a: 5, b: "10"}.to_json
+    context "struct" do
+      it "fails with a 422 if the required request body is invalid" do
+        header "Accept", "application/json"
+        header "Content-Type", "application/json"
+        post "/required-body-struct", {}.to_json
 
-      expect(last_response.headers["Content-Type"]).to eq("application/json")
-      expect(JSON.parse(last_response.body)).to eq("a" => 5, "b" => 10)
-      expect(last_response.status).to eq(200)
-    end
+        expect(last_response.status).to eq(422)
+      end
 
-    it "fails with a 422 if the required request body is not of the right struct" do
-      header "Accept", "application/json"
-      header "Content-Type", "application/json"
-      post "/required-body-struct", {}.to_json
+      it "follows the happy path" do
+        header "Accept", "application/json"
+        header "Content-Type", "application/json"
+        post "/required-body-struct", {a: 5, b: "10"}.to_json
 
-      expect(last_response.status).to eq(422)
-    end
-
-    it "follows the request happy path for struct" do
-      header "Accept", "application/json"
-      header "Content-Type", "application/json"
-      post "/required-body-struct", {a: 5, b: "10"}.to_json
-
-      expect(last_response.headers["Content-Type"]).to eq("application/json")
-      expect(JSON.parse(last_response.body)).to eq("a" => 5, "b" => 10)
-      expect(last_response.status).to eq(200)
+        expect(last_response.headers["Content-Type"]).to eq("application/json")
+        expect(JSON.parse(last_response.body)).to eq("a" => 5, "b" => 10)
+        expect(last_response.status).to eq(200)
+      end
     end
   end
 end
