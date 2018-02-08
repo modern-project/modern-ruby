@@ -5,4 +5,6 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in modern.gemspec
 gemspec
 
-gem 'content-type', git: 'https://github.com/eropple/content_type.rb', ref: 'rehab-work'
+group :development do
+  gem "openapi3_parser", git: "https://github.com/kevindew/openapi3_parser"
+end
