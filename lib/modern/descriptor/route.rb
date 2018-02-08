@@ -14,7 +14,7 @@ module Modern
       Type = Modern::Types.Instance(self)
 
       TEMPLATE_TOKEN = /\{.+\}/
-      OPENAPI_CAPTURE = %r|/\{(?<name>.+)\}|
+      OPENAPI_CAPTURE = %r|/\{(?<name>.+?)\}|
 
       attribute :id, Modern::Types::String
 

@@ -16,15 +16,14 @@ module Modern
         attribute :name, Modern::Types::Strict::String
         attribute :type, Modern::Types::Type
         attribute :description, Modern::Types::Strict::String.optional.default(nil)
-        attribute :required, Modern::Types::Strict::Bool.default(false)
         attribute :deprecated, Modern::Types::Strict::Bool.default(false)
 
         def friendly_name
           name
         end
 
-        def retrieve(request)
-          ret = do_retrieve(request)
+        def retrieve(request, route_captures)
+          ret = do_retrieve(request, route_captures)
 
           raise Modern::Errors::BadRequestError, "Invalid/missing parameter '#{friendly_name}'." \
             if required && ret.nil?
@@ -38,15 +37,26 @@ module Modern
 
         private
 
-        def do_retrieve(_request)
-          raise "#{self.class.name}#do_retrieve(request) must be implemented."
+        def do_retrieve(_request, _route_captures)
+          raise "#{self.class.name}#do_retrieve(request, route_captures) must be implemented."
         end
       end
 
       class Path < Base
         Type = Modern::Types.Instance(self)
 
-        attribute :style, Modern::Types::Coercible::String.default("simple").enum("matrix", "label", "simple")
+        # TODO: add 'matrix' and 'label'
+        attribute :style, Modern::Types::Coercible::String.default("simple").enum("simple")
+
+        def required
+          true
+        end
+
+        private
+
+        def do_retrieve(request, route_captures)
+          route_captures[name]
+        end
       end
 
       class Cookie < Base
@@ -54,6 +64,7 @@ module Modern
 
         attribute :cookie_name, Modern::Types::Coercible::String
         attribute :style, Modern::Types::Coercible::String.default("form").enum("form")
+        attribute :required, Modern::Types::Strict::Bool.default(false)
 
         def friendly_name
           cookie_name
@@ -61,7 +72,7 @@ module Modern
 
         private
 
-        def do_retrieve(request)
+        def do_retrieve(request, _route_captures)
           request.cookies[cookie_name]
         end
       end
@@ -71,6 +82,7 @@ module Modern
 
         attribute :header_name, Modern::Types::Coercible::String
         attribute :style, Modern::Types::Coercible::String.default("simple").enum("simple")
+        attribute :required, Modern::Types::Strict::Bool.default(false)
 
         attr_reader :rack_env_key
 
@@ -86,7 +98,7 @@ module Modern
 
         private
 
-        def do_retrieve(request)
+        def do_retrieve(request, _route_captures)
           request.env[@rack_env_key]
         end
       end
@@ -94,7 +106,9 @@ module Modern
       class Query < Base
         Type = Modern::Types.Instance(self)
 
-        attribute :style, Modern::Types::Coercible::String.default("form").enum("form", "space_delimited", "pipe_delimited", "deep_object")
+        # TODO: add 'space_delimited', 'pipe_delimited', 'deep_object'
+        attribute :style, Modern::Types::Coercible::String.default("form").enum("form")
+        attribute :required, Modern::Types::Strict::Bool.default(false)
 
         attribute :allow_empty_value, Modern::Types::Strict::Bool.default(false)
         attribute :allow_reserved, Modern::Types::Strict::Bool.default(false)
@@ -109,7 +123,7 @@ module Modern
 
         private
 
-        def do_retrieve(request)
+        def do_retrieve(request, _route_captures)
           @query_parser.parse_query(request.query_string)[name]
         end
       end

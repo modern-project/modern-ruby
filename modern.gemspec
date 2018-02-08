@@ -37,7 +37,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "mime-types-data", "~> 3.2016"
   spec.add_runtime_dependency "rack", "~> 2.0"
 
-  spec.add_runtime_dependency "addressable", "~> 2.5"
   spec.add_runtime_dependency "http", "~> 3.0"
 
   spec.add_runtime_dependency "deep_dup", "~> 0.0.3"

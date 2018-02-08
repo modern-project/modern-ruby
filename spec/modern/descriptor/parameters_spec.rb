@@ -129,6 +129,43 @@ shared_context "parameter test" do
     )
   end
 
+  let (:path_route) do
+    Modern::Descriptor::Route.new(
+      id: "getPath",
+      http_method: :GET,
+      path: "/path-simple/{a}/{b}/{c}",
+      summary: "A path parameter test",
+      parameters: [
+        Modern::Descriptor::Parameters::Path.new(
+          name: "a",
+          type: Modern::Types::Coercible::Int
+        ),
+        Modern::Descriptor::Parameters::Path.new(
+          name: "b",
+          type: Modern::Types::Coercible::String
+        ),
+        Modern::Descriptor::Parameters::Path.new(
+          name: "c",
+          type: Modern::Types::Coercible::Int
+        )
+      ],
+      responses: [
+        Modern::Descriptor::Response.new(
+          http_code: :default,
+          content: [
+            Modern::Descriptor::Content.new(
+              media_type: "application/json"
+            )
+          ]
+        )
+      ],
+      action:
+        proc do |req, res, params, body|
+          res.json(params)
+        end
+    )
+  end
+
   let(:descriptor) do
     Modern::Descriptor::Core.new(
       info: Modern::OpenAPI3::Info.new(
@@ -138,12 +175,11 @@ shared_context "parameter test" do
       routes: [
         query_route,
         header_route,
-        cookie_route
+        cookie_route,
+        path_route
       ],
       security_schemes: []
     )
-  end
-
   end
 
   let(:app) do
@@ -193,7 +229,11 @@ describe Modern::Descriptor::Parameters do
     end
 
     it "parses a path parameter" do
+      get "/path-simple/5/something/10"
 
+      expect(last_response.headers["Content-Type"]).to eq("application/json")
+      expect(JSON.parse(last_response.body)).to eq("a" => 5, "b" => "something", "c" => 10)
+      expect(last_response.status).to eq(200)
     end
 
     it "parses a form-encoded cookie parameter" do
