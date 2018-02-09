@@ -2,6 +2,7 @@
 
 require 'modern/errors/web_errors'
 
+require 'modern/app/request_handling/request_container'
 require 'modern/app/request_handling/input_handling'
 require 'modern/app/request_handling/output_handling'
 
@@ -40,7 +41,11 @@ module Modern
           if body.nil? && route.request_body&.required
 
         begin
-          retval = route.action.call(request, response, params, body)
+          container = Modern::App::RequestHandling::RequestContainer.new(
+            route_logger, route, request, response, params, body
+          )
+
+          retval = container.instance_eval(&route.action)
 
           # Leaving a hole for people to bypass responses and dump whatever
           # they want through the underlying `Rack::Response`.

@@ -48,7 +48,7 @@ module Modern
 
     def call(env)
       request = Modern::Request.new(env, logger)
-      response = Modern::Response.new
+      response = Modern::Response.new(request)
       response.headers["X-Request-Id"] = request.request_id
 
       route = @router.resolve(request.request_method, request.path_info)

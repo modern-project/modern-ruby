@@ -37,9 +37,9 @@ shared_context "parameter test" do
         )
       ],
       action:
-        proc do |req, res, params, body|
-          res.bypass!
-          res.json(params)
+        proc do
+          response.bypass!
+          response.json(params)
         end
     )
   end
@@ -81,9 +81,9 @@ shared_context "parameter test" do
         )
       ],
       action:
-        proc do |req, res, params, body|
-          res.bypass!
-          res.json(params)
+        proc do
+          response.bypass!
+          response.json(params)
         end
     )
   end
@@ -125,9 +125,9 @@ shared_context "parameter test" do
         )
       ],
       action:
-        proc do |req, res, params, body|
-          res.bypass!
-          res.json(params)
+        proc do
+          response.bypass!
+          response.json(params)
         end
     )
   end
@@ -163,9 +163,9 @@ shared_context "parameter test" do
         )
       ],
       action:
-        proc do |req, res, params, body|
-          res.bypass!
-          res.json(params)
+        proc do
+          response.bypass!
+          response.json(params)
         end
     )
   end

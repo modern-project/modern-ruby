@@ -30,7 +30,7 @@ shared_context "request body test" do
           required: true
         ),
       action:
-        proc do |_req, _res, _params, body|
+        proc do
           body
         end
     )
@@ -63,7 +63,7 @@ shared_context "request body test" do
           required: true
         ),
       action:
-        proc do |_req, _res, _params, body|
+        proc do
           body
         end
     )

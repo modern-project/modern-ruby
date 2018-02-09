@@ -32,6 +32,8 @@ module Modern
       attribute :request_body, Modern::Descriptor::RequestBody::Type.optional.default(nil)
       attribute :responses, Modern::Types.array_of(Modern::Descriptor::Response::Type)
 
+      attribute :helpers, Modern::Types.array_of(Modern::Types.Instance(Module))
+
       attribute :action, Modern::Types::RouteAction
 
       attr_reader :path_matcher

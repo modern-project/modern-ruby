@@ -6,7 +6,15 @@ require 'json'
 
 module Modern
   class Response < Rack::Response
+    attr_reader :request
     attr_reader :bypass
+
+    def initialize(request, body=[], status=200, header={})
+      super(body, status, header)
+
+      @request = request
+      @bypass = false
+    end
 
     def bypass!
       @bypass = true
