@@ -9,6 +9,7 @@ require "ougai"
 
 require "modern/configuration"
 require "modern/descriptor"
+require "modern/services"
 
 require "modern/request"
 require "modern/response"
@@ -33,20 +34,17 @@ module Modern
     include Modern::App::ErrorHandling
     include Modern::App::RequestHandling
 
-    DEFAULT_SERVICES = {
-      base_logger: Ougai::Logger.new($stderr)
-    }.freeze
-
     attr_reader :logger
+    attr_reader :services
 
-    def initialize(descriptor, configuration = Modern::Configuration.new, services = {})
+    def initialize(descriptor, configuration = Modern::Configuration.new, services = Services.new)
       @descriptor = IceNine.deep_freeze(DeepDup.deep_dup(descriptor))
       @configuration = IceNine.deep_freeze(DeepDup.deep_dup(configuration))
-      @services = DEFAULT_SERVICES.merge(services).dup.freeze
+      @services = services
 
       # TODO: figure out a good componentized naming scheme for Modern's own logs
       #       so as to clearly differentiate them from user logs.
-      @logger = @services[:base_logger]
+      @logger = @services.base_logger
 
       @router = Modern::App::TrieRouter.new(routes: @descriptor.routes)
       @input_converters = @descriptor.input_converters.map { |c| [c.media_type.downcase.strip, c] }.to_h.freeze
