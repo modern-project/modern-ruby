@@ -192,8 +192,8 @@ shared_context "content test" do
     cfg = Modern::Configuration.new(
       validate_responses: "error"
     )
-    Modern::App.new(descriptor, cfg, Ougai::Logger.new(StringIO.new))
-    # Modern::App.new(descriptor, cfg)
+    # dumping logs to a StringIO squelches them in rspec runs.
+    Modern::App.new(descriptor, cfg, base_logger: Ougai::Logger.new(StringIO.new))
   end
 end
 

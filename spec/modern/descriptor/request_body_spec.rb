@@ -92,7 +92,8 @@ shared_context "request body test" do
 
   let(:app) do
     cfg = Modern::Configuration.new
-    Modern::App.new(descriptor, cfg, Ougai::Logger.new(StringIO.new))
+    # dumping logs to a StringIO squelches them in rspec runs.
+    Modern::App.new(descriptor, cfg, base_logger: Ougai::Logger.new(StringIO.new))
   end
 end
 

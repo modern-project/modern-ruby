@@ -23,16 +23,20 @@ module Modern
         raise Modern::Errors::NotAcceptableError \
           if output_converter.nil? || !route.content_types.include?(output_converter.media_type)
 
+        container = PartialRequestContainer.new(
+          route_logger, @services, route, request, response
+        )
+
+        # TODO: do security checks here
+
         params = parse_parameters(request, route)
         body = parse_request_body(request, route) unless route.request_body.nil?
         raise Modern::Errors::BadRequestError \
           if body.nil? && route.request_body&.required
 
         begin
-          container = Modern::App::RequestHandling::RequestContainer.new(
-            route_logger, route, request, response, params, body
-          )
-
+          # Creates a FullRequestContainer and runs through it
+          container = container.to_full(params, body)
           retval = container.instance_eval(&route.action)
 
           # Leaving a hole for people to bypass responses and dump whatever
