@@ -15,7 +15,12 @@ module Modern
             Modern::Util::HeaderParsing.parse_accept_header(accept_header) \
                                        .select { |c| route.content_types.include?(c) }
 
-          @output_converters[requested_types.find { |c| @output_converters.key?(c) }]
+          route.output_converters_by_type[requested_types.find do |c|
+            route.output_converters_by_type.key?(c)
+          end] ||
+            @output_converters[requested_types.find do |c|
+              @output_converters.key?(c)
+            end]
         end
 
         def validate_output!(content, retval, request, route)

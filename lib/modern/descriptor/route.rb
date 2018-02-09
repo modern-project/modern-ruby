@@ -32,8 +32,10 @@ module Modern
       attribute :request_body, Modern::Descriptor::RequestBody::Type.optional.default(nil)
       attribute :responses, Modern::Types.array_of(Modern::Descriptor::Response::Type)
 
-      attribute :helpers, Modern::Types.array_of(Modern::Types.Instance(Module))
+      attribute :input_converters, Modern::Types.array_of(Modern::Descriptor::Converters::Input::Base::Type)
+      attribute :output_converters, Modern::Types.array_of(Modern::Descriptor::Converters::Output::Base::Type)
 
+      attribute :helpers, Modern::Types.array_of(Modern::Types.Instance(Module))
       attribute :action, Modern::Types::RouteAction
 
       attr_reader :path_matcher
@@ -41,6 +43,9 @@ module Modern
 
       attr_reader :content_types
       attr_reader :responses_by_code
+
+      attr_reader :input_converters_by_type
+      attr_reader :output_converters_by_type
 
       def initialize(fields)
         super(fields)
@@ -60,6 +65,9 @@ module Modern
         nondefault_content = @content_types - @responses_by_code[:default].content.map(&:media_type).to_set
         raise "Missing content types in default HTTP response for #{id}: #{nondefault_content.join(', ')}" \
             unless nondefault_content.empty?
+
+        @input_converters_by_type = input_converters.map { |c| [c.media_type.downcase.strip, c] }.to_h.freeze
+        @output_converters_by_type = output_converters.map { |c| [c.media_type.downcase.strip, c] }.to_h.freeze
       end
     end
   end

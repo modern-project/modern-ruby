@@ -16,7 +16,7 @@ module Modern
         end
 
         def parse_request_body(request, route)
-          input_converter = determine_input_converter(request)
+          input_converter = determine_input_converter(request, route)
           raise Modern::Errors::UnsupportedMediaTypeError if input_converter.nil?
 
           raw = input_converter.converter.call(request.body)
@@ -46,12 +46,12 @@ module Modern
           end
         end
 
-        def determine_input_converter(request)
+        def determine_input_converter(request, route)
           # RFC 2616; you MAY sniff content but SHOULD return application/octet-stream
           # if the input Content-Type remains unknown. However, it seems like Rack may
           # default to application/x-www-form-urlencoded; Rack::Test definitely does.
           content_type = request.content_type.downcase.strip
-          @input_converters[content_type]
+          route.input_converters_by_type[content_type] || @input_converters[content_type]
         end
       end
     end

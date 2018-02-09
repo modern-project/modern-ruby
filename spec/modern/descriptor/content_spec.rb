@@ -2,6 +2,8 @@
 
 require 'modern/app'
 
+# TODO: test - ensure that route output converters override app output converters
+
 shared_context "content test" do
   let(:good_route_scalar) do
     Modern::Descriptor::Route.new(

@@ -2,6 +2,8 @@
 
 require 'modern/app'
 
+# TODO: test - ensure that route input converters override app input converters
+
 shared_context "request body test" do
   let(:required_body_hash_route) do
     Modern::Descriptor::Route.new(

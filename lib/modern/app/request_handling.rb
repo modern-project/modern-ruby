@@ -15,19 +15,7 @@ module Modern
       private
 
       # Encapsulates the full request handler for the app, given the route from
-      # the router. `#take_request` then:
-      #
-      # - Performs parameter validation based on the parameters provided to the
-      #   route's parameter spec, fills a parameters hash. If parameters do not
-      #   validate, we raise a {Modern::Errors::BadRequestError}.
-      # - Performs request body validation based on the request's `Content-Type`
-      #   header against the request body type provided. If the request body
-      #   does not validate, we raise a {Modern::Errors::BadRequestError}.
-      # - Ensures that there is a {Modern::Descriptor::Response::Content} that
-      #   can satisfy the requestor's `Accept` header. If no `Accept` header is
-      #   given, then the first `Content` will be used; if no match is found
-      #   between its `Accept` header and the `Content` objects for this route,
-      #   we raise a {Modern::Errors::UnsupportedMediaTypeError}.
+      # the router. Handles security scheme checks, parameter validation, etc.
       def process_request(request, response, route)
         route_logger = request.logger.child(id: route.id)
 
