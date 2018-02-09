@@ -10,8 +10,7 @@ describe Modern::App do
           title: "App Spec",
           version: "1.0.0"
         ),
-        routes: [],
-        security_schemes: []
+        routes: []
       )
     end
 

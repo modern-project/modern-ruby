@@ -9,8 +9,6 @@ require "modern/descriptor/parameters"
 require "modern/descriptor/request_body"
 require "modern/descriptor/security"
 
-require "modern/util/header_parsing"
-
 module Modern
   module Descriptor
     class Route < Modern::Struct
@@ -30,12 +28,13 @@ module Modern
       attribute :tags, Types.array_of(Types::Coercible::String)
 
       attribute :parameters, Types.array_of(Parameters::Base::Type)
-      attribute :request_body, Modern::Descriptor::RequestBody::Type.optional.default(nil)
-      attribute :responses, Types.array_of(Modern::Descriptor::Response::Type)
+      attribute :request_body, RequestBody::Type.optional.default(nil)
+      attribute :responses, Types.array_of(Response::Type)
 
-      attribute :input_converters, Types.array_of(Modern::Descriptor::Converters::Input::Base::Type)
-      attribute :output_converters, Types.array_of(Modern::Descriptor::Converters::Output::Base::Type)
+      attribute :input_converters, Types.array_of(Converters::Input::Base::Type)
+      attribute :output_converters, Types.array_of(Converters::Output::Base::Type)
 
+      attribute :security, Types.array_of(Security::Base::Type)
       attribute :helpers, Types.array_of(Types.Instance(Module))
       attribute :action, Types::RouteAction
 

@@ -130,8 +130,7 @@ shared_context "routing test" do
         get_subresource,
         get_subresource_override,
         get_subresource_deeper
-      ],
-      security_schemes: []
+      ]
     )
   end
 
@@ -144,8 +143,7 @@ shared_context "routing test" do
       routes: [
         get_subresource_deeper,
         get_subresource_deeper2
-      ],
-      security_schemes: []
+      ]
     )
   end
 

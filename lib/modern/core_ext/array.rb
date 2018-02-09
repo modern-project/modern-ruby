@@ -7,6 +7,10 @@ class Array
     end
   end
 
+  def duplicates
+    group_by(&:itself).map { |e| e[0] if e[1][1] }.compact
+  end
+
   def deep_compact!
     each do |v|
       if v.is_a?(Hash) || v.respond_to?(:values)

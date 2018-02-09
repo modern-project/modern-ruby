@@ -2,6 +2,8 @@
 
 require 'modern/errors/web_errors'
 
+require "modern/util/header_parsing"
+
 module Modern
   class App
     module RequestHandling

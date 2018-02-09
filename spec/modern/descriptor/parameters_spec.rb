@@ -182,7 +182,6 @@ shared_context "parameter test" do
         cookie_route,
         path_route
       ],
-      security_schemes: [],
       input_converters: [
         Modern::Descriptor::Converters::Input::JSON
       ],

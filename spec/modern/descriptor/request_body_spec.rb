@@ -81,7 +81,6 @@ shared_context "request body test" do
         required_body_hash_route,
         required_body_struct_route
       ],
-      security_schemes: [],
       input_converters: [
         Modern::Descriptor::Converters::Input::JSON
       ],

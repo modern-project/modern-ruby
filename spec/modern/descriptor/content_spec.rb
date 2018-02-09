@@ -182,7 +182,6 @@ shared_context "content test" do
         good_route_struct,
         bad_route_struct
       ],
-      security_schemes: [],
       output_converters: [
         Modern::Descriptor::Converters::Output::JSON
       ]
