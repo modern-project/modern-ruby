@@ -11,7 +11,7 @@ module Modern
         # against a {Modern::Types::Type} if one has been provided (which will
         # cause a validation check) before being passed into the route action.
         class Base < Modern::Struct
-          Type = Modern::Types.Instance(self)
+          Type = Types.Instance(self)
 
           attr_reader :content_type
 
@@ -20,8 +20,8 @@ module Modern
             @content_type = ContentType.parse(media_type).freeze
           end
 
-          attribute :media_type, Modern::Types::MIMEType
-          attribute :converter, Modern::Types.Instance(Proc)
+          attribute :media_type, Types::MIMEType
+          attribute :converter, Types.Instance(Proc)
         end
       end
     end

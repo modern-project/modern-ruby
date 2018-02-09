@@ -7,7 +7,7 @@ module Modern
         # a Ruby object to yield UTF-8 text; a binary converter would take an IO
         # and dump its contents into the HTTP stream.
         class Base < Modern::Struct
-          Type = Modern::Types.Instance(self)
+          Type = Types.Instance(self)
 
           attr_reader :content_type
 
@@ -16,8 +16,8 @@ module Modern
             @content_type = ContentType.parse(media_type).freeze
           end
 
-          attribute :media_type, Modern::Types::MIMEType
-          attribute :converter, Modern::Types.Instance(Proc)
+          attribute :media_type, Types::MIMEType
+          attribute :converter, Types.Instance(Proc)
         end
       end
     end

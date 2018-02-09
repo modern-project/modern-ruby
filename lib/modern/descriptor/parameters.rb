@@ -8,15 +8,15 @@ module Modern
     module Parameters
       class Base < Modern::Struct
         # TODO: maybe do something behind-the-scenes where `required` is
-        #       expressed as part of dry-types (| Modern::Types::Nil); we need
+        #       expressed as part of dry-types (| Types::Nil); we need
         #       the field for easily generating a doc later, but we could parse
         #       it out of the type if we had to.
-        Type = Modern::Types.Instance(self)
+        Type = Types.Instance(self)
 
-        attribute :name, Modern::Types::Strict::String
-        attribute :type, Modern::Types::Type
-        attribute :description, Modern::Types::Strict::String.optional.default(nil)
-        attribute :deprecated, Modern::Types::Strict::Bool.default(false)
+        attribute :name, Types::Strict::String
+        attribute :type, Types::Type
+        attribute :description, Types::Strict::String.optional.default(nil)
+        attribute :deprecated, Types::Strict::Bool.default(false)
 
         def friendly_name
           name
@@ -43,10 +43,10 @@ module Modern
       end
 
       class Path < Base
-        Type = Modern::Types.Instance(self)
+        Type = Types.Instance(self)
 
         # TODO: add 'matrix' and 'label'
-        attribute :style, Modern::Types::Coercible::String.default("simple").enum("simple")
+        attribute :style, Types::Coercible::String.default("simple").enum("simple")
 
         def required
           true
@@ -60,11 +60,11 @@ module Modern
       end
 
       class Cookie < Base
-        Type = Modern::Types.Instance(self)
+        Type = Types.Instance(self)
 
-        attribute :cookie_name, Modern::Types::Coercible::String
-        attribute :style, Modern::Types::Coercible::String.default("form").enum("form")
-        attribute :required, Modern::Types::Strict::Bool.default(false)
+        attribute :cookie_name, Types::Coercible::String
+        attribute :style, Types::Coercible::String.default("form").enum("form")
+        attribute :required, Types::Strict::Bool.default(false)
 
         def friendly_name
           cookie_name
@@ -78,11 +78,11 @@ module Modern
       end
 
       class Header < Base
-        Type = Modern::Types.Instance(self)
+        Type = Types.Instance(self)
 
-        attribute :header_name, Modern::Types::Coercible::String
-        attribute :style, Modern::Types::Coercible::String.default("simple").enum("simple")
-        attribute :required, Modern::Types::Strict::Bool.default(false)
+        attribute :header_name, Types::Coercible::String
+        attribute :style, Types::Coercible::String.default("simple").enum("simple")
+        attribute :required, Types::Strict::Bool.default(false)
 
         attr_reader :rack_env_key
 
@@ -104,14 +104,14 @@ module Modern
       end
 
       class Query < Base
-        Type = Modern::Types.Instance(self)
+        Type = Types.Instance(self)
 
         # TODO: add 'space_delimited', 'pipe_delimited', 'deep_object'
-        attribute :style, Modern::Types::Coercible::String.default("form").enum("form")
-        attribute :required, Modern::Types::Strict::Bool.default(false)
+        attribute :style, Types::Coercible::String.default("form").enum("form")
+        attribute :required, Types::Strict::Bool.default(false)
 
-        attribute :allow_empty_value, Modern::Types::Strict::Bool.default(false)
-        attribute :allow_reserved, Modern::Types::Strict::Bool.default(false)
+        attribute :allow_empty_value, Types::Strict::Bool.default(false)
+        attribute :allow_reserved, Types::Strict::Bool.default(false)
 
         attr_reader :parser
 

@@ -5,11 +5,11 @@ require "modern/struct"
 module Modern
   module Descriptor
     class RequestBody < Modern::Struct
-      Type = Modern::Types.Instance(self)
+      Type = Types.Instance(self)
 
-      attribute :type, (Modern::Types::Type | Modern::Types::Struct).optional.default(nil)
-      attribute :required, Modern::Types::Strict::Bool.default(false)
-      attribute :description, Modern::Types::Strict::String.optional.default(nil)
+      attribute :type, (Types::Type | Types::Struct).optional.default(nil)
+      attribute :required, Types::Strict::Bool.default(false)
+      attribute :description, Types::Strict::String.optional.default(nil)
     end
   end
 end

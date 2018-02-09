@@ -6,24 +6,20 @@ require "modern/descriptor/content"
 module Modern
   module Descriptor
     class Response < Modern::Struct
-      Type = Modern::Types.Instance(self)
-
-      module Types
-        HttpCode = Modern::Types::Strict::Int | Modern::Types.Value(:default)
-      end
+      Type = Types.Instance(self)
 
       class Header < Modern::Struct
-        Type = Modern::Types.Instance(self)
+        Type = Types.Instance(self)
 
-        attribute :name, Modern::Types::Strict::String
-        attribute :description, Modern::Types::Strict::String.optional.default(nil)
-        attribute :schema, Modern::Types::Type.optional.default(nil)
+        attribute :name, Types::Strict::String
+        attribute :description, Types::Strict::String.optional.default(nil)
+        attribute :schema, Types::Type.optional.default(nil)
       end
 
-      attribute :http_code, Types::HttpCode
-      attribute :description, Modern::Types::Strict::String.optional.default(nil)
-      attribute :headers, Modern::Types.array_of(Header::Type)
-      attribute :content, Modern::Types.array_of(Content::Type)
+      attribute :http_code, Types::Strict::Int | Types.Value(:default)
+      attribute :description, Types::Strict::String.optional.default(nil)
+      attribute :headers, Types.array_of(Header::Type)
+      attribute :content, Types.array_of(Content::Type)
 
       attr_reader :content_by_type
 

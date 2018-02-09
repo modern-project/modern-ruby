@@ -7,36 +7,37 @@ require "modern/struct"
 require "modern/descriptor/response"
 require "modern/descriptor/parameters"
 require "modern/descriptor/request_body"
+require "modern/descriptor/security"
 
 require "modern/util/header_parsing"
 
 module Modern
   module Descriptor
     class Route < Modern::Struct
-      Type = Modern::Types.Instance(self)
+      Type = Types.Instance(self)
 
       TEMPLATE_TOKEN = /\{.+\}/
       OPENAPI_CAPTURE = %r|/\{(?<name>.+?)\}|
 
-      attribute :id, Modern::Types::String
+      attribute :id, Types::String
 
-      attribute :http_method, Modern::Types::HttpMethod
-      attribute :path, Modern::Types::HttpPath
+      attribute :http_method, Types::HttpMethod
+      attribute :path, Types::HttpPath
 
-      attribute :summary, Modern::Types::Strict::String.optional.default(nil)
-      attribute :description, Modern::Types::Strict::String.optional.default(nil)
-      attribute :deprecated, Modern::Types::Strict::Bool.default(false)
-      attribute :tags, Modern::Types.array_of(Types::Coercible::String)
+      attribute :summary, Types::Strict::String.optional.default(nil)
+      attribute :description, Types::Strict::String.optional.default(nil)
+      attribute :deprecated, Types::Strict::Bool.default(false)
+      attribute :tags, Types.array_of(Types::Coercible::String)
 
-      attribute :parameters, Modern::Types.array_of(Parameters::Base::Type)
+      attribute :parameters, Types.array_of(Parameters::Base::Type)
       attribute :request_body, Modern::Descriptor::RequestBody::Type.optional.default(nil)
-      attribute :responses, Modern::Types.array_of(Modern::Descriptor::Response::Type)
+      attribute :responses, Types.array_of(Modern::Descriptor::Response::Type)
 
-      attribute :input_converters, Modern::Types.array_of(Modern::Descriptor::Converters::Input::Base::Type)
-      attribute :output_converters, Modern::Types.array_of(Modern::Descriptor::Converters::Output::Base::Type)
+      attribute :input_converters, Types.array_of(Modern::Descriptor::Converters::Input::Base::Type)
+      attribute :output_converters, Types.array_of(Modern::Descriptor::Converters::Output::Base::Type)
 
-      attribute :helpers, Modern::Types.array_of(Modern::Types.Instance(Module))
-      attribute :action, Modern::Types::RouteAction
+      attribute :helpers, Types.array_of(Types.Instance(Module))
+      attribute :action, Types::RouteAction
 
       attr_reader :path_matcher
       attr_reader :route_tokens

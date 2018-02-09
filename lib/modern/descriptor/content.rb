@@ -5,10 +5,10 @@ require "modern/struct"
 module Modern
   module Descriptor
     class Content < Modern::Struct
-      Type = Modern::Types.Instance(self)
+      Type = Types.Instance(self)
 
-      attribute :media_type, Modern::Types::MIMEType
-      attribute :schema, (Modern::Types::Type | Modern::Types::Struct).optional.default(nil)
+      attribute :media_type, Types::MIMEType
+      attribute :schema, (Types::Type | Types::Struct).optional.default(nil)
     end
   end
 end
