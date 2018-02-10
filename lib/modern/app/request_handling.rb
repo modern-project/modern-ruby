@@ -24,7 +24,7 @@ module Modern
           if output_converter.nil? || !route.content_types.include?(output_converter.media_type)
 
         container = PartialRequestContainer.new(
-          route_logger, @services, route, request, response
+          route_logger, @configuration, @services, route, request, response
         )
 
         raise Errors::UnauthorizedError \
