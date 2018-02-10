@@ -20,6 +20,26 @@ module Modern
       end
     end
 
+    class UnauthorizedError < WebError
+      def initialize(msg = "Unauthorized")
+        super(msg)
+      end
+
+      def status
+        401
+      end
+    end
+
+    class ForbiddenError < WebError
+      def initialize(msg = "Forbidden")
+        super(msg)
+      end
+
+      def status
+        403
+      end
+    end
+
     class NotFoundError < WebError
       def initialize(msg = "Not found")
         super(msg)

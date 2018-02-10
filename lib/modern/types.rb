@@ -28,6 +28,7 @@ module Modern
     )
 
     RouteAction = Instance(Proc)
+    SecurityAction = Instance(Proc)
 
     ParameterStyle = Types::Coercible::String.enum(:matrix, :label, :form,
                                                    :simple, :space_delimited,
