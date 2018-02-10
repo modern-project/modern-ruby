@@ -35,8 +35,6 @@ module Modern
           end
         end
 
-        private
-
         def do_retrieve(_request, _route_captures)
           raise "#{self.class.name}#do_retrieve(request, route_captures) must be implemented."
         end
@@ -51,8 +49,6 @@ module Modern
         def required
           true
         end
-
-        private
 
         def do_retrieve(request, route_captures)
           route_captures[name]
@@ -70,9 +66,7 @@ module Modern
           cookie_name
         end
 
-        private
-
-        def do_retrieve(request, _route_captures)
+        def do_retrieve(request, _route_captures = nil)
           request.cookies[cookie_name]
         end
       end
@@ -96,9 +90,7 @@ module Modern
           header_name
         end
 
-        private
-
-        def do_retrieve(request, _route_captures)
+        def do_retrieve(request, _route_captures = nil)
           request.env[@rack_env_key]
         end
       end
@@ -121,9 +113,7 @@ module Modern
           @query_parser = Rack::QueryParser.make_default(99, 99)
         end
 
-        private
-
-        def do_retrieve(request, _route_captures)
+        def do_retrieve(request, _route_captures = nil)
           @query_parser.parse_query(request.query_string)[name]
         end
       end

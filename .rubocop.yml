@@ -1,6 +1,9 @@
 AllCops:
   TargetRubyVersion: 2.3
 
+Style/RegexpLiteral:
+  EnforcedStyle: percent_r
+
 Metrics/BlockLength:
   Enabled: false
 

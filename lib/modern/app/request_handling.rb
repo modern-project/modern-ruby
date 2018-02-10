@@ -20,24 +20,25 @@ module Modern
         route_logger = request.logger.child(id: route.id)
 
         output_converter = determine_output_converter(request, route)
-        raise Modern::Errors::NotAcceptableError \
+        raise Errors::NotAcceptableError \
           if output_converter.nil? || !route.content_types.include?(output_converter.media_type)
 
         container = PartialRequestContainer.new(
           route_logger, @services, route, request, response
         )
 
-        # TODO: do security checks here
+        raise Errors::UnauthorizedError \
+          if !route.security.empty? && route.security.all? { |s| s.validate(container) == false }
 
         params = parse_parameters(request, route)
         body = parse_request_body(request, route) unless route.request_body.nil?
-        raise Modern::Errors::BadRequestError \
+        raise Errors::BadRequestError \
           if body.nil? && route.request_body&.required
 
         begin
           # Creates a FullRequestContainer and runs through it
           container = container.to_full(params, body)
-          retval = container.instance_eval(&route.action)
+          retval = container.instance_exec(&route.action)
 
           # Leaving a hole for people to bypass responses and dump whatever
           # they want through the underlying `Rack::Response`.
@@ -48,7 +49,7 @@ module Modern
             route_content = route_response.content_by_type[output_converter.media_type]
 
             if route_content.nil?
-              raise Modern::Errors::InternalServiceError,
+              raise Errors::InternalServiceError,
                     "no content for '#{output_converter.media_type}' for code #{route_code}"
             end
 

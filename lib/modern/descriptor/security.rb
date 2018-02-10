@@ -32,20 +32,18 @@ module Modern
         attribute :description, Types::Strict::String.optional.default(nil)
         attribute :validation, Types::SecurityAction
 
-        def validate(context)
-          value = do_validate(context.request)
+        def validate(container)
+          value = do_credential_fetch(container.request)
 
           if value.nil?
             false
           else
-            !!(context.instance_eval &validation)
+            !!container.instance_exec(value, &validation)
           end
         end
 
-        private
-
-        def do_validate(_request)
-          raise "#{self.class.name}#do_validate(request) must be implemented."
+        def do_credential_fetch(_request)
+          raise "#{self.class.name}#do_credential_fetch(request) must be implemented."
         end
       end
 
@@ -61,6 +59,10 @@ module Modern
           raise Modern::Errors::SetupError, "Parameter must not be 'required' (internal limitation)." \
             if parameter.required
         end
+
+        def do_credential_fetch(request)
+          parameter.do_retrieve(request)
+        end
       end
 
       class Http < Base
@@ -69,7 +71,22 @@ module Modern
         # however, this is for headers like Accept-Encoding. We don't need to split Authorization.
         Type = Types.Instance(self)
 
+        SPLITTER = %r,([^\s]+?)\s+(.*+),
+
         attribute :scheme, Types::Strict::String
+
+        def do_credential_fetch(request)
+          header = request.env["HTTP_AUTHORIZATION"]
+
+          if header.nil?
+            nil
+          else
+            match = SPLITTER.match(header)
+            # yields #<MatchData "Bearer foo" 1:"Bearer" 2:"foo">
+            # TODO: figure out how to pre-downcase the scheme before dry-struct gets it
+            (!match.nil? && (match[1].downcase == scheme.downcase)) ? match[2].strip : nil
+          end
+        end
       end
     end
   end
