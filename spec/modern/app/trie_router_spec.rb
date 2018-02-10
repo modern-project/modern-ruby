@@ -120,7 +120,7 @@ shared_context "routing test" do
 
   let(:descriptor) do
     Modern::Descriptor::Core.new(
-      info: Modern::OpenAPI3::Info.new(
+      info: Modern::Descriptor::Info.new(
         title: "Trie Router Spec",
         version: "1.0.0"
       ),
@@ -136,7 +136,7 @@ shared_context "routing test" do
 
   let(:dupe_descriptor) do
     Modern::Descriptor::Core.new(
-      info: Modern::OpenAPI3::Info.new(
+      info: Modern::Descriptor::Info.new(
         title: "Trie Router Spec 2",
         version: "1.0.0"
       ),

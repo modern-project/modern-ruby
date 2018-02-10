@@ -73,7 +73,7 @@ shared_context "request body test" do
 
   let(:descriptor) do
     Modern::Descriptor::Core.new(
-      info: Modern::OpenAPI3::Info.new(
+      info: Modern::Descriptor::Info.new(
         title: "Request Body Spec",
         version: "1.0.0"
       ),

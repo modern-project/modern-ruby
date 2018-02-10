@@ -172,7 +172,7 @@ shared_context "parameter test" do
 
   let(:descriptor) do
     Modern::Descriptor::Core.new(
-      info: Modern::OpenAPI3::Info.new(
+      info: Modern::Descriptor::Info.new(
         title: "Parameter Spec",
         version: "1.0.0"
       ),

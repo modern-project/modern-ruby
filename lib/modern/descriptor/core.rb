@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
 require "modern/struct"
-require "modern/descriptor/route"
+
+require "modern/core_ext/array"
+
+require "modern/descriptor/info"
 require "modern/descriptor/converters"
-require "modern/open_api3/security_scheme"
+require "modern/descriptor/route"
 
 module Modern
   module Descriptor
@@ -12,7 +15,7 @@ module Modern
     # instances inside of itself; this is used by {Modern::App} to generate
     # OpenAPI documentation and design routing accordingly.
     class Core < Modern::Struct
-      attribute :info, Modern::OpenAPI3::Info::Type
+      attribute :info, Modern::Descriptor::Info::Type
 
       attribute :routes, Types.array_of(Modern::Descriptor::Route::Type)
 

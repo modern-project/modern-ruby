@@ -171,7 +171,7 @@ shared_context "security test" do
 
   let(:descriptor) do
     Modern::Descriptor::Core.new(
-      info: Modern::OpenAPI3::Info.new(
+      info: Modern::Descriptor::Info.new(
         title: "Security Spec",
         version: "1.0.0"
       ),

@@ -170,7 +170,7 @@ shared_context "content test" do
 
   let(:descriptor) do
     Modern::Descriptor::Core.new(
-      info: Modern::OpenAPI3::Info.new(
+      info: Modern::Descriptor::Info.new(
         title: "Content Spec",
         version: "1.0.0"
       ),
