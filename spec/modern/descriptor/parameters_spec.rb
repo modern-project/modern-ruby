@@ -132,7 +132,7 @@ shared_context "parameter test" do
     )
   end
 
-  let (:path_route) do
+  let(:path_route) do
     Modern::Descriptor::Route.new(
       id: "getPath",
       http_method: :GET,

@@ -1,5 +1,7 @@
 AllCops:
   TargetRubyVersion: 2.3
+  Exclude:
+    - "*.gemspec"
 
 Style/RegexpLiteral:
   EnforcedStyle: percent_r

@@ -12,9 +12,10 @@ require "modern/descriptor/security"
 module Modern
   module Descriptor
     class Route < Modern::Struct
+      # TODO: define OpenAPI-style callbacks
       Type = Types.Instance(self)
 
-      TEMPLATE_TOKEN = /\{.+\}/
+      TEMPLATE_TOKEN = %r|\{.+\}|
       OPENAPI_CAPTURE = %r|/\{(?<name>.+?)\}|
 
       attribute :id, Types::String

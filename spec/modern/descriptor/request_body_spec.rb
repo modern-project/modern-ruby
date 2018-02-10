@@ -137,7 +137,7 @@ describe Modern::Descriptor::RequestBody do
       it "follows the happy path" do
         header "Accept", "application/json"
         header "Content-Type", "application/json"
-        post "/required-body-hash", {a: 5, b: "10"}.to_json
+        post "/required-body-hash", { a: 5, b: "10" }.to_json
 
         expect(last_response.headers["Content-Type"]).to eq("application/json")
         expect(JSON.parse(last_response.body)).to eq("a" => 5, "b" => 10)
@@ -157,7 +157,7 @@ describe Modern::Descriptor::RequestBody do
       it "follows the happy path" do
         header "Accept", "application/json"
         header "Content-Type", "application/json"
-        post "/required-body-struct", {a: 5, b: "10"}.to_json
+        post "/required-body-struct", { a: 5, b: "10" }.to_json
 
         expect(last_response.headers["Content-Type"]).to eq("application/json")
         expect(JSON.parse(last_response.body)).to eq("a" => 5, "b" => 10)

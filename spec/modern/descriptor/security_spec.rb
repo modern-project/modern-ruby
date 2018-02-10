@@ -178,7 +178,6 @@ shared_context "security test" do
       routes: [
         http_bearer,
         http_multi,
-
         apikey_query,
         apikey_header,
         apikey_cookie
