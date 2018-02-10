@@ -70,6 +70,14 @@ detail later) maps easily to OpenAPI 3.0 and so an API designed along Modern's
 across. You fire up your Modern app, it generates and serves an OpenAPI spec,
 and you're off to the races.
 
+### Modern Should Be Portable ###
+Obviously, I don't mean you're going to fire up Node and run `modern.rb`. But
+Modern is intended to describe a fairly straightforward and _simple_ set of
+behaviors that are OpenAPI-specific much more than they are Ruby-specific. It
+should be eminently possible to do a side-by-side port of Modern to Node or to
+Kotlin or to other languages in a way that provides baseline OpenAPI server
+capabilities wherever you happen to be.
+
 ## How Modern Works ##
 Modern is a standard Rack-based application, run through a config.ru` file like
 any other. There's plenty of great Rack documentation out there. Instead, let's
