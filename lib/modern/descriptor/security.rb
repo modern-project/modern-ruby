@@ -83,8 +83,8 @@ module Modern
           else
             match = SPLITTER.match(header)
             # yields #<MatchData "Bearer foo" 1:"Bearer" 2:"foo">
-            # TODO: figure out how to pre-downcase the scheme before dry-struct gets it
-            (!match.nil? && (match[1].downcase == scheme.downcase)) ? match[2].strip : nil
+
+            match[2].strip if !match.nil? && match[1].casecmp(scheme).zero?
           end
         end
       end

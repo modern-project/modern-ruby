@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Modern
   module Descriptor
     module Converters

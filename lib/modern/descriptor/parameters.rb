@@ -25,13 +25,14 @@ module Modern
         def retrieve(request, route_captures)
           ret = do_retrieve(request, route_captures)
 
-          raise Modern::Errors::BadRequestError, "Invalid/missing parameter '#{friendly_name}'." \
+          raise Errors::BadRequestError, "Invalid/missing parameter '#{friendly_name}'." \
             if required && ret.nil?
 
           begin
             ret.nil? ? nil : type[ret]
-          rescue
-            raise "Couldn't interpret the value provided for parameter '#{friendly_name}': #{ret}."
+          rescue StandardError => _err
+            raise Errors::InternalServiceError,
+                  "Couldn't interpret the value provided for parameter '#{friendly_name}': #{ret}."
           end
         end
 
@@ -50,7 +51,7 @@ module Modern
           true
         end
 
-        def do_retrieve(request, route_captures)
+        def do_retrieve(_request, route_captures)
           route_captures[name]
         end
       end

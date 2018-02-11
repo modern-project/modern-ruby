@@ -9,7 +9,7 @@ module Modern
     attr_reader :request
     attr_reader :bypass
 
-    def initialize(request, body=[], status=200, header={})
+    def initialize(request, body = [], status = 200, header = {})
       super(body, status, header)
 
       @request = request

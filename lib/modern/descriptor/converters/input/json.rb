@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'modern/descriptor/converters/input/base'
 
 require 'json'

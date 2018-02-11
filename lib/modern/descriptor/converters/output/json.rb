@@ -1,6 +1,11 @@
+# frozen_string_literal: true
+
 require 'modern/descriptor/converters/output/base'
 
 require 'json'
+
+# it gets confused by the blank line after the retval reassignment.
+# rubocop:disable Layout/EmptyLinesAroundArguments
 
 module Modern
   module Descriptor
@@ -31,3 +36,5 @@ module Modern
     end
   end
 end
+
+# rubocop:enable Layout/EmptyLinesAroundArguments
