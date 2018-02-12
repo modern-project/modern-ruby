@@ -28,6 +28,9 @@ module Modern
       attr_reader :root_schemas
       attr_reader :routes_by_path
 
+      attr_reader :input_converters_by_type
+      attr_reader :output_converters_by_type
+
       def initialize(fields)
         super
 
@@ -55,6 +58,9 @@ module Modern
           @routes_by_path[route.path][route.http_method] = route
         end
         @routes_by_path.freeze
+
+        @input_converters_by_type = input_converters.map { |c| [c.media_type.downcase.strip, c] }.to_h.freeze
+        @output_converters_by_type = output_converters.map { |c| [c.media_type.downcase.strip, c] }.to_h.freeze
       end
     end
   end

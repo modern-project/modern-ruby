@@ -32,6 +32,14 @@ module Modern
             end
           end
         )
+
+        # We use this because we pre-bake the OpenAPI3 spec JSON and
+        # want the content type. However, our route invokes
+        # {Modern::Response#bypass!}, so this will never be called.
+        JSONBypass = Base.new(
+          media_type: "application/json",
+          converter: proc { raise "this should never be called!" }
+        )
       end
     end
   end

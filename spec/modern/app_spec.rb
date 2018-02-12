@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'modern/app'
+require 'modern/doc_generator/open_api3'
 
 describe Modern::App do
   context "an App with an empty Descriptor" do
@@ -42,6 +43,26 @@ describe Modern::App do
       expect(id1).not_to be_nil
       expect(id2).not_to be_nil
       expect(id1).not_to eq(id2)
+    end
+
+    it "serves a valid OpenAPI3 JSON document at the expected path" do
+      get "/openapi.json"
+
+      expect(last_response.status).to eq(200)
+
+      body = JSON.parse(last_response.body)
+      expect(body.dig("openapi")).to eq(Modern::DocGenerator::OpenAPI3::OPENAPI_VERSION)
+      expect(body.dig("info", "title")).to eq("App Spec")
+    end
+
+    it "serves a valid OpenAPI3 YAML document at the expected path" do
+      get "/openapi.yaml"
+
+      expect(last_response.status).to eq(200)
+
+      body = YAML.safe_load(last_response.body)
+      expect(body.dig("openapi")).to eq(Modern::DocGenerator::OpenAPI3::OPENAPI_VERSION)
+      expect(body.dig("info", "title")).to eq("App Spec")
     end
   end
 end

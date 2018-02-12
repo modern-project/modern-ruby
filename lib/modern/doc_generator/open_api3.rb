@@ -4,6 +4,7 @@ require 'json'
 require 'yaml'
 
 require 'modern/descriptor'
+require 'modern/descriptor/converters'
 
 Dir["#{__dir__}/open_api3/*.rb"].each { |f| require_relative f }
 
@@ -37,6 +38,16 @@ module Modern
         YAML.dump(JSON.parse(json(descriptor)))
       end
 
+      def both(descriptor)
+        h = hash(descriptor)
+        j = JSON.pretty_generate(hash(descriptor))
+
+        {
+          json: j,
+          yaml: YAML.dump(JSON.parse(j))
+        }
+      end
+
       def hash(descriptor)
         ret = {
           openapi: OPENAPI_VERSION,
@@ -47,6 +58,57 @@ module Modern
         }
 
         ret
+      end
+
+      def decorate_with_openapi_routes(configuration, descriptor)
+        docs = both(descriptor)
+
+        openapi3_json = docs[:json].freeze
+        openapi3_yaml = docs[:yaml].freeze
+
+        serve_json = Modern::Descriptor::Route.new(
+          id: "serveOpenApi3Json",
+          http_method: :GET,
+          path: configuration.open_api_json_path,
+          summary: "Serves the OpenAPI3 application spec in JSON form.",
+          responses: [
+            Modern::Descriptor::Response.new(
+              http_code: :default,
+              content: [Modern::Descriptor::Content.new(media_type: "application/json")]
+            )
+          ],
+          output_converters: [
+            Modern::Descriptor::Converters::Output::JSONBypass
+          ],
+          action:
+            proc do
+              response.bypass!
+              response.write(openapi3_json)
+            end
+        )
+
+        serve_yaml = Modern::Descriptor::Route.new(
+          id: "serveOpenApi3Yaml",
+          http_method: :GET,
+          path: configuration.open_api_yaml_path,
+          summary: "Serves the OpenAPI3 application spec in YAML form.",
+          responses: [
+            Modern::Descriptor::Response.new(
+              http_code: :default,
+              content: [Modern::Descriptor::Content.new(media_type: "application/yaml")]
+            )
+          ],
+          output_converters: [
+            Modern::Descriptor::Converters::Output::YAMLBypass
+          ],
+          action:
+            proc do
+              response.bypass!
+              response.write(openapi3_yaml)
+            end
+        )
+
+        [serve_json, serve_yaml, descriptor.routes].flatten
       end
 
       def _info(obj)

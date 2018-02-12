@@ -18,6 +18,8 @@ require "modern/app/error_handling"
 require "modern/app/request_handling"
 require "modern/app/trie_router"
 
+require "modern/doc_generator/open_api3"
+
 require "modern/errors"
 require "modern/redirect"
 
@@ -46,7 +48,9 @@ module Modern
       #       so as to clearly differentiate them from user logs.
       @logger = @services.base_logger
 
-      @router = Modern::App::TrieRouter.new(routes: @descriptor.routes)
+      @router = Modern::App::TrieRouter.new(
+        routes: Modern::DocGenerator::OpenAPI3.new.decorate_with_openapi_routes(@configuration, @descriptor)
+      )
       @input_converters = @descriptor.input_converters.map { |c| [c.media_type.downcase.strip, c] }.to_h.freeze
       @output_converters = @descriptor.output_converters.map { |c| [c.media_type.downcase.strip, c] }.to_h.freeze
     end

@@ -50,7 +50,7 @@ module Modern
           # RFC 2616; you MAY sniff content but SHOULD return application/octet-stream
           # if the input Content-Type remains unknown. However, it seems like Rack may
           # default to application/x-www-form-urlencoded; Rack::Test definitely does.
-          content_type = request.content_type.downcase.strip
+          content_type = (request.content_type || "application/octet-stream").downcase.strip
           route.input_converters_by_type[content_type] || @input_converters[content_type]
         end
       end

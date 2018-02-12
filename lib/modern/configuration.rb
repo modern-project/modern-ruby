@@ -9,5 +9,8 @@ module Modern
     attribute :log_input_converter_errors, Modern::Types::Strict::Bool.default(true)
 
     attribute :validate_responses, Modern::Types::Strict::String.default("log").enum("no", "log", "error")
+
+    attribute :open_api_json_path, Modern::Types::Strict::String.default("/openapi.json")
+    attribute :open_api_yaml_path, Modern::Types::Strict::String.default("/openapi.yaml")
   end
 end

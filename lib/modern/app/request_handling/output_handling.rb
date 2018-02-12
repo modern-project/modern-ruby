@@ -13,16 +13,27 @@ module Modern
         def determine_output_converter(request, route)
           # TODO: handle the wildcard case.
           accept_header = request.env["HTTP_ACCEPT"] || "*/*"
+
           requested_types =
             Modern::Util::HeaderParsing.parse_accept_header(accept_header) \
-                                       .select { |c| route.content_types.include?(c) }
+                                       .select { |c| route.content_types.any? { |ct| File.fnmatch(c, ct) } }
 
-          route.output_converters_by_type[requested_types.find do |c|
-            route.output_converters_by_type.key?(c)
-          end] ||
-            @output_converters[requested_types.find do |c|
-              @output_converters.key?(c)
-            end]
+          ret =
+            route.output_converters.find do |oc|
+              requested_types.find do |c|
+                File.fnmatch(c, oc.media_type)
+              end
+            end ||
+            @descriptor.output_converters.find do |oc|
+              requested_types.find do |c|
+                File.fnmatch(c, oc.media_type)
+              end
+            end
+
+          raise Errors::NotAcceptableError, "No servable types in Accept header: #{accept_header || 'nil'}" \
+            if ret.nil?
+
+          ret
         end
 
         def validate_output!(content, retval, request, route)
