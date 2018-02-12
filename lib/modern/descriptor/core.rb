@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "set"
+
 require "modern/struct"
 
 require "modern/core_ext/array"
@@ -23,6 +25,8 @@ module Modern
       attribute :output_converters, Types.array_of(Modern::Descriptor::Converters::Output::Base::Type)
 
       attr_reader :securities_by_name
+      attr_reader :root_schemas
+      attr_reader :routes_by_path
 
       def initialize(fields)
         super
@@ -34,6 +38,23 @@ module Modern
           unless duplicate_names.empty?
 
         @securities_by_name = securities.map { |s| [s.name, s] }.to_h.freeze
+
+        # This could be a set, but I like being able to just pull values in debug and this is
+        # only iterated over.
+        @root_schemas =
+          routes.map do |route|
+            [
+              route.request_body&.type,
+              route.responses.map(&:content).flatten.map(&:type)
+            ]
+          end.flatten.compact.uniq.freeze
+
+        @routes_by_path = {}
+        routes.each do |route|
+          @routes_by_path[route.path] ||= {}
+          @routes_by_path[route.path][route.http_method] = route
+        end
+        @routes_by_path.freeze
       end
     end
   end

@@ -2,74 +2,12 @@
 
 require 'modern/app'
 
+require_relative './routes'
+
 # TODO: test - ensure that route input converters override app input converters
 
-shared_context "request body test" do
-  let(:required_body_hash_route) do
-    Modern::Descriptor::Route.new(
-      id: "postRequiredBodyHash",
-      http_method: :POST,
-      path: "/required-body-hash",
-      summary: "when the request body is required for a hash",
-      parameters: [],
-      responses: [
-        Modern::Descriptor::Response.new(
-          http_code: :default,
-          content: [
-            Modern::Descriptor::Content.new(
-              media_type: "application/json"
-            )
-          ]
-        )
-      ],
-      request_body:
-        Modern::Descriptor::RequestBody.new(
-          type: Modern::Types::Strict::Hash.strict_with_defaults(
-            a: Modern::Types::Strict::Int,
-            b: Modern::Types::Coercible::Int,
-            c: Modern::Types::Strict::Int.optional.default(nil)
-          ),
-          required: true
-        ),
-      action:
-        proc do
-          body
-        end
-    )
-  end
-
-  let(:required_body_struct_route) do
-    Modern::Descriptor::Route.new(
-      id: "postRequiredBodyStruct",
-      http_method: :POST,
-      path: "/required-body-struct",
-      summary: "when the request body is required for a struct",
-      parameters: [],
-      responses: [
-        Modern::Descriptor::Response.new(
-          http_code: :default,
-          content: [
-            Modern::Descriptor::Content.new(
-              media_type: "application/json"
-            )
-          ]
-        )
-      ],
-      request_body:
-        Modern::Descriptor::RequestBody.new(
-          type: Class.new(Modern::Struct) do
-            attribute :a, Modern::Types::Strict::Int
-            attribute :b, Modern::Types::Coercible::Int
-            attribute :c, Modern::Types::Strict::Int.optional.default(nil)
-          end,
-          required: true
-        ),
-      action:
-        proc do
-          body
-        end
-    )
-  end
+describe Modern::Descriptor::RequestBody do
+  include_context "request body routes"
 
   let(:descriptor) do
     Modern::Descriptor::Core.new(
@@ -95,12 +33,8 @@ shared_context "request body test" do
     # dumping logs to a StringIO squelches them in rspec runs.
     Modern::App.new(descriptor, cfg, Modern::Services.new(base_logger: Ougai::Logger.new(StringIO.new)))
   end
-end
 
-describe Modern::Descriptor::RequestBody do
   context "basic request body validation" do
-    include_context "request body test"
-
     it "fails with a 415 if no input converter available" do
       header "Accept", "application/json" # output should never be hit
       header "Content-Type", "application/prs.never-available"

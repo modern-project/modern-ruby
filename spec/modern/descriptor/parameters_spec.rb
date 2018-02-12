@@ -2,173 +2,10 @@
 
 require 'modern/app'
 
-shared_context "parameter test" do
-  let(:query_route) do
-    Modern::Descriptor::Route.new(
-      id: "getQuery",
-      http_method: :GET,
-      path: "/query-form",
-      summary: "A query parameter",
-      parameters: [
-        Modern::Descriptor::Parameters::Query.new(
-          name: "a",
-          type: Modern::Types::Coercible::Int,
-          required: true
-        ),
-        Modern::Descriptor::Parameters::Query.new(
-          name: "b",
-          type: Modern::Types::Coercible::String,
-          required: true
-        ),
-        Modern::Descriptor::Parameters::Query.new(
-          name: "c",
-          type: Modern::Types::Coercible::Int,
-          required: false
-        )
-      ],
-      responses: [
-        Modern::Descriptor::Response.new(
-          http_code: :default,
-          content: [
-            Modern::Descriptor::Content.new(
-              media_type: "application/json"
-            )
-          ]
-        )
-      ],
-      action:
-        proc do
-          response.bypass!
-          response.json(params)
-        end
-    )
-  end
+require_relative './routes'
 
-  let(:header_route) do
-    Modern::Descriptor::Route.new(
-      id: "getHeader",
-      http_method: :GET,
-      path: "/header-simple",
-      summary: "A header parameter",
-      parameters: [
-        Modern::Descriptor::Parameters::Header.new(
-          name: "a",
-          header_name: "My-Header-A",
-          type: Modern::Types::Coercible::Int,
-          required: true
-        ),
-        Modern::Descriptor::Parameters::Header.new(
-          name: "b",
-          header_name: "My-Header-B",
-          type: Modern::Types::Coercible::String,
-          required: true
-        ),
-        Modern::Descriptor::Parameters::Header.new(
-          name: "c",
-          header_name: "My-Header-C",
-          type: Modern::Types::Coercible::Int,
-          required: false
-        )
-      ],
-      responses: [
-        Modern::Descriptor::Response.new(
-          http_code: :default,
-          content: [
-            Modern::Descriptor::Content.new(
-              media_type: "application/json"
-            )
-          ]
-        )
-      ],
-      action:
-        proc do
-          response.bypass!
-          response.json(params)
-        end
-    )
-  end
-
-  let(:cookie_route) do
-    Modern::Descriptor::Route.new(
-      id: "getCookie",
-      http_method: :GET,
-      path: "/cookie-form",
-      summary: "A cookie parameter",
-      parameters: [
-        Modern::Descriptor::Parameters::Cookie.new(
-          name: "a",
-          cookie_name: "My-Cookie-A",
-          type: Modern::Types::Coercible::Int,
-          required: true
-        ),
-        Modern::Descriptor::Parameters::Cookie.new(
-          name: "b",
-          cookie_name: "My-Cookie-B",
-          type: Modern::Types::Coercible::String,
-          required: true
-        ),
-        Modern::Descriptor::Parameters::Cookie.new(
-          name: "c",
-          cookie_name: "My-Cookie-C",
-          type: Modern::Types::Coercible::Int,
-          required: false
-        )
-      ],
-      responses: [
-        Modern::Descriptor::Response.new(
-          http_code: :default,
-          content: [
-            Modern::Descriptor::Content.new(
-              media_type: "application/json"
-            )
-          ]
-        )
-      ],
-      action:
-        proc do
-          response.bypass!
-          response.json(params)
-        end
-    )
-  end
-
-  let(:path_route) do
-    Modern::Descriptor::Route.new(
-      id: "getPath",
-      http_method: :GET,
-      path: "/path-simple/{a}/{b}/{c}",
-      summary: "A path parameter test",
-      parameters: [
-        Modern::Descriptor::Parameters::Path.new(
-          name: "a",
-          type: Modern::Types::Coercible::Int
-        ),
-        Modern::Descriptor::Parameters::Path.new(
-          name: "b",
-          type: Modern::Types::Coercible::String
-        ),
-        Modern::Descriptor::Parameters::Path.new(
-          name: "c",
-          type: Modern::Types::Coercible::Int
-        )
-      ],
-      responses: [
-        Modern::Descriptor::Response.new(
-          http_code: :default,
-          content: [
-            Modern::Descriptor::Content.new(
-              media_type: "application/json"
-            )
-          ]
-        )
-      ],
-      action:
-        proc do
-          response.bypass!
-          response.json(params)
-        end
-    )
-  end
+describe Modern::Descriptor::Parameters do
+  include_context "parameter routes"
 
   let(:descriptor) do
     Modern::Descriptor::Core.new(
@@ -194,12 +31,8 @@ shared_context "parameter test" do
   let(:app) do
     Modern::App.new(descriptor)
   end
-end
 
-describe Modern::Descriptor::Parameters do
   context "basic types of parameters" do
-    include_context "parameter test"
-
     it "parses a form-encoded query parameter" do
       header "Accept", "application/json"
       get "/query-form?a=5&b=something"

@@ -36,8 +36,22 @@ module Modern
           end
         end
 
+        def openapi3_in
+          self.class.name.split("::").last.downcase
+        end
+
         def do_retrieve(_request, _route_captures)
           raise "#{self.class.name}#do_retrieve(request, route_captures) must be implemented."
+        end
+
+        def to_openapi3(is_api_key = false)
+          {
+            name: friendly_name,
+            in: openapi3_in,
+            required: !is_api_key ? required : nil,
+            description: !is_api_key ? description : nil,
+            deprecated: !is_api_key ? deprecated : nil
+          }.compact
         end
       end
 
@@ -116,6 +130,13 @@ module Modern
 
         def do_retrieve(request, _route_captures = nil)
           @query_parser.parse_query(request.query_string)[name]
+        end
+
+        def to_openapi3(is_api_key = false)
+          super.merge(
+            allowEmptyValue: !is_api_key ? description : nil,
+            allowReserved: !is_api_key ? allow_reserved : nil
+          ).compact
         end
       end
     end

@@ -26,10 +26,10 @@ module Modern
         end
 
         def validate_output!(content, retval, request, route)
-          if content.schema.nil?
+          if content.type.nil?
             retval
           else
-            content.schema[retval]
+            content.type[retval]
           end
         rescue Dry::Types::ConstraintError,
                Dry::Types::MissingKeyError,

@@ -9,6 +9,7 @@ module Modern
       Type = Types.Instance(self)
 
       class Header < Modern::Struct
+        # TODO: rename #schema to #type and implement in OpenAPI generator
         Type = Types.Instance(self)
 
         attribute :name, Types::Strict::String
@@ -17,7 +18,7 @@ module Modern
       end
 
       attribute :http_code, Types::Strict::Int | Types.Value(:default)
-      attribute :description, Types::Strict::String.optional.default(nil)
+      attribute :description, Types::Strict::String.default("No description provided.")
       attribute :headers, Types.array_of(Header::Type)
       attribute :content, Types.array_of(Content::Type)
 

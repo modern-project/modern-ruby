@@ -8,7 +8,7 @@ module Modern
       Type = Types.Instance(self)
 
       attribute :media_type, Types::MIMEType
-      attribute :schema, (Types::Type | Types::Struct).optional.default(nil)
+      attribute :type, (Types::Type | Types::Struct).optional.default(nil)
     end
   end
 end

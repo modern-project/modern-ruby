@@ -56,7 +56,7 @@ module Modern
             retval = validate_output!(route_content, retval, request, route)
 
             response.headers["Content-Type"] = output_converter.media_type
-            response.write(output_converter.converter.call(route_content.schema, retval))
+            response.write(output_converter.converter.call(route_content.type, retval))
           end
         rescue StandardError => err
           route_logger.error(err)
