@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.email                  = ["ed@edropple.com"]
 
   spec.summary                = "The API-driven web framework for Ruby."
-  spec.homepage               = "https://github.com/eropple/modern"
+  spec.homepage               = "https://github.com/modern-project/modern-ruby"
   spec.license                = "MIT"
 
   spec.files                  = `git ls-files -z`.split("\x0").reject do |f|
