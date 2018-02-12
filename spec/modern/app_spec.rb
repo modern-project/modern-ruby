@@ -53,6 +53,10 @@ describe Modern::App do
       body = JSON.parse(last_response.body)
       expect(body.dig("openapi")).to eq(Modern::DocGenerator::OpenAPI3::OPENAPI_VERSION)
       expect(body.dig("info", "title")).to eq("App Spec")
+
+      doc = Openapi3Parser.load(body)
+
+      expect(doc.errors.errors).to eq([])
     end
 
     it "serves a valid OpenAPI3 YAML document at the expected path" do
@@ -63,6 +67,10 @@ describe Modern::App do
       body = YAML.safe_load(last_response.body)
       expect(body.dig("openapi")).to eq(Modern::DocGenerator::OpenAPI3::OPENAPI_VERSION)
       expect(body.dig("info", "title")).to eq("App Spec")
+
+      doc = Openapi3Parser.load(body)
+
+      expect(doc.errors.errors).to eq([])
     end
   end
 end
