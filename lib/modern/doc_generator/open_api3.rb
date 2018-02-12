@@ -6,6 +6,8 @@ require 'yaml'
 require 'modern/descriptor'
 require 'modern/descriptor/converters'
 
+require 'modern/version'
+
 Dir["#{__dir__}/open_api3/*.rb"].each { |f| require_relative f }
 
 module Modern
@@ -19,7 +21,7 @@ module Modern
       #       would make using an external/visiting doc generator impractical.
       #       It's simple enough, though, so let's roll with it for now.
 
-      OPENAPI_VERSION = "3.0.1"
+      OPENAPI_VERSION = Modern::OPENAPI_VERSION
 
       def initialize
         @type_registry = {}
