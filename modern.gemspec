@@ -44,6 +44,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "deep_dup", "~> 0.0.3"
   spec.add_runtime_dependency "diff-lcs", "~> 1.3"
+  spec.add_runtime_dependency "docile", "~> 1.3"
   spec.add_runtime_dependency "dry-struct", "~> 0.4"
   spec.add_runtime_dependency "dry-validation", "~> 0.11"
   spec.add_runtime_dependency "ice_nine", "~> 0.11.2"
