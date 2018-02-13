@@ -23,14 +23,11 @@ module Modern
           @request = request
           @response = response
         end
-
-        def to_full(params, body)
-          FullRequestContainer.new(logger, configuration, services, route, request, response, params, body)
-        end
       end
 
       # Encapsulates all portions of the request, including params and body,
-      # to have a route action run inside of it.
+      # to have a route action run inside of it. This will be subclassed by
+      # {Modern::Descriptor::Route}s that incorporate helper libraries.
       class FullRequestContainer < PartialRequestContainer
         attr_reader :params
         attr_reader :body
@@ -40,12 +37,6 @@ module Modern
 
           @params = params
           @body = body
-
-          # TODO: There's probably a nontrivial performance impact to this.
-          #       Maybe we create a RequestContainer subclass for every route?
-          #       That also seems bad. Or maybe routes pre-generate a single
-          #       module that is extended into the request container.
-          route.helpers.each { |h| extend h }
         end
       end
     end

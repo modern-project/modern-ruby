@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.authors                = ["Ed Ropple"]
   spec.email                  = ["ed@edropple.com"]
 
-  spec.summary                = "The API-driven web framework for Ruby."
+  spec.summary                = "The OpenAPI-driven web framework for Ruby."
   spec.homepage               = "https://github.com/modern-project/modern-ruby"
   spec.license                = "MIT"
 

@@ -37,7 +37,9 @@ module Modern
 
         begin
           # Creates a FullRequestContainer and runs through it
-          container = container.to_full(params, body)
+          container = route.request_container_class.new(
+            route_logger, @configuration, @services, route, request, response, params, body
+          )
           retval = container.instance_exec(&route.action)
 
           # Leaving a hole for people to bypass responses and dump whatever

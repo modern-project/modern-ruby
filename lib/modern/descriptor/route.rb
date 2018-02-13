@@ -48,6 +48,8 @@ module Modern
       attr_reader :input_converters_by_type
       attr_reader :output_converters_by_type
 
+      attr_reader :request_container_class
+
       def initialize(fields)
         super(fields)
 
@@ -69,6 +71,16 @@ module Modern
 
         @input_converters_by_type = input_converters.map { |c| [c.media_type.downcase.strip, c] }.to_h.freeze
         @output_converters_by_type = output_converters.map { |c| [c.media_type.downcase.strip, c] }.to_h.freeze
+
+        @request_container_class =
+          if helpers.empty?
+            Modern::App::RequestHandling::FullRequestContainer
+          else
+            rcc = Class.new(Modern::App::RequestHandling::FullRequestContainer)
+            helpers.each { |h| rcc.send(:include, h) }
+
+            rcc
+          end
       end
     end
   end
