@@ -37,6 +37,8 @@ module Modern
             rescue Dry::Types::ConstraintError,
                    Dry::Types::MissingKeyError,
                    Dry::Struct::Error => err
+              request.logger.info("Struct parse error for route '#{route.id}'", err) \
+                   if @configuration.log_input_converter_errors
               raise Modern::Errors::UnprocessableEntity, err.message
             rescue StandardError => err
               request.logger.warn("Unprocessable body for route '#{route.id}'", err) \
