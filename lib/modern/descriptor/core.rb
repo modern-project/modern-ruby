@@ -21,8 +21,8 @@ module Modern
 
       attribute :routes, Types.array_of(Modern::Descriptor::Route)
 
-      attribute :input_converters, Types.array_of(Modern::Descriptor::Converters::Input::Base)
-      attribute :output_converters, Types.array_of(Modern::Descriptor::Converters::Output::Base)
+      attribute :input_converters, Types.array_of(Converters::Input::Base)
+      attribute :output_converters, Types.array_of(Converters::Output::Base)
 
       attr_reader :securities_by_name
       attr_reader :root_schemas

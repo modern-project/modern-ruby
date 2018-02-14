@@ -89,7 +89,7 @@ describe Modern::DocGenerator::OpenAPI3 do
       yaml = YAML.dump(JSON.parse(json))
       doc = Openapi3Parser.load(yaml)
 
-      expect(doc.errors.errors).to eq([])
+      expect(doc.errors.to_a).to eq([])
     end
   end
 end

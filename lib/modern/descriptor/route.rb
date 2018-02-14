@@ -4,6 +4,7 @@ require "set"
 
 require "modern/struct"
 
+require "modern/descriptor/converters"
 require "modern/descriptor/response"
 require "modern/descriptor/parameters"
 require "modern/descriptor/request_body"
@@ -30,8 +31,8 @@ module Modern
       attribute :request_body, RequestBody.optional.default(nil)
       attribute :responses, Types.array_of(Response)
 
-      attribute :input_converters, Types.array_of(Converters::Input::Base)
-      attribute :output_converters, Types.array_of(Converters::Output::Base)
+      attribute :input_converters, Types.array_of(Modern::Descriptor::Converters::Input::Base)
+      attribute :output_converters, Types.array_of(Modern::Descriptor::Converters::Output::Base)
 
       attribute :security, Types.array_of(Security::Base)
       attribute :helpers, Types.array_of(Types.Instance(Module))
