@@ -17,12 +17,12 @@ module Modern
     # instances inside of itself; this is used by {Modern::App} to generate
     # OpenAPI documentation and design routing accordingly.
     class Core < Modern::Struct
-      attribute :info, Modern::Descriptor::Info::Type
+      attribute :info, Modern::Descriptor::Info
 
-      attribute :routes, Types.array_of(Modern::Descriptor::Route::Type)
+      attribute :routes, Types.array_of(Modern::Descriptor::Route)
 
-      attribute :input_converters, Types.array_of(Modern::Descriptor::Converters::Input::Base::Type)
-      attribute :output_converters, Types.array_of(Modern::Descriptor::Converters::Output::Base::Type)
+      attribute :input_converters, Types.array_of(Modern::Descriptor::Converters::Input::Base)
+      attribute :output_converters, Types.array_of(Modern::Descriptor::Converters::Output::Base)
 
       attr_reader :securities_by_name
       attr_reader :root_schemas

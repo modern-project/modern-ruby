@@ -11,8 +11,6 @@ module Modern
         #       expressed as part of dry-types (| Types::Nil); we need
         #       the field for easily generating a doc later, but we could parse
         #       it out of the type if we had to.
-        Type = Types.Instance(self)
-
         attribute :name, Types::Strict::String
         attribute :type, Types::Type
         attribute :description, Types::Strict::String.optional.default(nil)
@@ -56,8 +54,6 @@ module Modern
       end
 
       class Path < Base
-        Type = Types.Instance(self)
-
         # TODO: add 'matrix' and 'label'
         attribute :style, Types::Coercible::String.default("simple").enum("simple")
 
@@ -71,8 +67,6 @@ module Modern
       end
 
       class Cookie < Base
-        Type = Types.Instance(self)
-
         attribute :cookie_name, Types::Coercible::String
         attribute :style, Types::Coercible::String.default("form").enum("form")
         attribute :required, Types::Strict::Bool.default(false)
@@ -87,8 +81,6 @@ module Modern
       end
 
       class Header < Base
-        Type = Types.Instance(self)
-
         attribute :header_name, Types::Coercible::String
         attribute :style, Types::Coercible::String.default("simple").enum("simple")
         attribute :required, Types::Strict::Bool.default(false)
@@ -111,8 +103,6 @@ module Modern
       end
 
       class Query < Base
-        Type = Types.Instance(self)
-
         # TODO: add 'space_delimited', 'pipe_delimited', 'deep_object'
         attribute :style, Types::Coercible::String.default("form").enum("form")
         attribute :required, Types::Strict::Bool.default(false)
