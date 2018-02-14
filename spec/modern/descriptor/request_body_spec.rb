@@ -32,6 +32,7 @@ describe Modern::Descriptor::RequestBody do
     cfg = Modern::Configuration.new
     # dumping logs to a StringIO squelches them in rspec runs.
     Modern::App.new(descriptor, cfg, Modern::Services.new(base_logger: Ougai::Logger.new(StringIO.new)))
+    # Modern::App.new(descriptor, cfg)
   end
 
   context "basic request body validation" do
