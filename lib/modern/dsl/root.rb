@@ -11,12 +11,11 @@ module Modern
       attr_reader :descriptor
 
       def initialize(descriptor = DEFAULT_VALUE)
-        @descriptor = descriptor
+        super(descriptor, {})
       end
 
       def info(&block)
-        info = Info.build(&block)
-        @descriptor = @descriptor.copy(info: info.to_h)
+        @descriptor = @descriptor.copy(info: Info.build(&block).to_h)
       end
 
       def input_converter(media_type_or_converter, &block)
