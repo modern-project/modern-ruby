@@ -26,8 +26,6 @@ module Modern
       # the validator can then store a User object (or whatever) into it for use
       # in the actual application.
       class Base < Modern::Struct
-        Type = Types.Instance(self)
-
         attribute :name, Types::Strict::String
         attribute :description, Types::Strict::String.optional.default(nil)
         attribute :validation, Types::SecurityAction
@@ -54,9 +52,7 @@ module Modern
       end
 
       class ApiKey < Base
-        Type = Types.Instance(self)
-
-        attribute :parameter, Parameters::Query::Type | Parameters::Header::Type | Parameters::Cookie::Type
+        attribute :parameter, Parameters::Query | Parameters::Header | Parameters::Cookie
 
         def initialize(fields)
           super
@@ -79,8 +75,6 @@ module Modern
         # aside: some people think that the Authorization field can support multiple sets of credentials,
         # as RFC 7230 suggests that headers can be sent "multiple" times by using a comma to split them.
         # however, this is for headers like Accept-Encoding. We don't need to split Authorization.
-        Type = Types.Instance(self)
-
         SPLITTER = %r,([^\s]+?)\s+(.*+),
 
         attribute :scheme, Types::Strict::String

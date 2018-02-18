@@ -5,6 +5,11 @@ A detailed description is on the way. For now, please feel free to peruse our
 [test cases] and the beginnings of our [manual] to get an idea of Modern and how
 it works.
 
+## Versioning ##
+This project follows the [Semantic Versioning], version 2.0.0, with one
+addendum: until the project reaches the 1.0.0 mark, the minor version number
+(i.e., 0.y.*) denotes an API-breaking change.
+
 ## Contributing ##
 Bug reports and pull requests are welcome [on GitHub]. This project is intended
 to be a safe, welcoming space for collaboration, and contributors are expected
@@ -24,6 +29,7 @@ rooms and mailing lists is expected to follow the [code of conduct].
 
 [test cases]: https://github.com/eropple/modern/tree/master/spec/modern
 [manual]: https://github.com/eropple/modern/tree/master/manual
+[Semantic Versioning]: https://semver.org/
 [on GitHub]: https://github.com/eropple/modern
 [Contributor Covenant]: http://contributor-covenant.org
 [MIT License]: https://opensource.org/licenses/MIT

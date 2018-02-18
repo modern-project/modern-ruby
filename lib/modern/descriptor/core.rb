@@ -17,15 +17,16 @@ module Modern
     # instances inside of itself; this is used by {Modern::App} to generate
     # OpenAPI documentation and design routing accordingly.
     class Core < Modern::Struct
-      attribute :info, Modern::Descriptor::Info::Type
+      attribute :info, Modern::Descriptor::Info
 
-      attribute :routes, Types.array_of(Modern::Descriptor::Route::Type)
+      attribute :routes, Types.array_of(Modern::Descriptor::Route)
 
-      attribute :input_converters, Types.array_of(Modern::Descriptor::Converters::Input::Base::Type)
-      attribute :output_converters, Types.array_of(Modern::Descriptor::Converters::Output::Base::Type)
+      attribute :input_converters, Types.array_of(Converters::Input::Base)
+      attribute :output_converters, Types.array_of(Converters::Output::Base)
 
       attr_reader :securities_by_name
       attr_reader :root_schemas
+      attr_reader :routes_by_id
       attr_reader :routes_by_path
 
       attr_reader :input_converters_by_type
@@ -58,6 +59,8 @@ module Modern
           @routes_by_path[route.path][route.http_method] = route
         end
         @routes_by_path.freeze
+
+        @routes_by_id = routes.map { |route| [route.id, route] }.to_h.freeze
 
         @input_converters_by_type = input_converters.map { |c| [c.media_type.downcase.strip, c] }.to_h.freeze
         @output_converters_by_type = output_converters.map { |c| [c.media_type.downcase.strip, c] }.to_h.freeze

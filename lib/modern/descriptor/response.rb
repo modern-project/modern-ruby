@@ -2,25 +2,17 @@
 
 require "modern/struct"
 require "modern/descriptor/content"
+require "modern/descriptor/parameters"
 
 module Modern
   module Descriptor
     class Response < Modern::Struct
-      Type = Types.Instance(self)
-
-      class Header < Modern::Struct
-        # TODO: rename #schema to #type and implement in OpenAPI generator
-        Type = Types.Instance(self)
-
-        attribute :name, Types::Strict::String
-        attribute :description, Types::Strict::String.optional.default(nil)
-        attribute :schema, Types::Type.optional.default(nil)
-      end
-
+      # TODO: figure out a good way to handle header responses
+      #       This is in part an API response type of thing; how do we ensure that
+      #       an action defines the header that it says it's defining?
       attribute :http_code, Types::Strict::Int | Types.Value(:default)
       attribute :description, Types::Strict::String.default("No description provided.")
-      attribute :headers, Types.array_of(Header::Type)
-      attribute :content, Types.array_of(Content::Type)
+      attribute :content, Types.array_of(Content)
 
       attr_reader :content_by_type
 

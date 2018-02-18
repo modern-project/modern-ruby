@@ -13,8 +13,6 @@ module Modern
         # against a {Modern::Types::Type} if one has been provided (which will
         # cause a validation check) before being passed into the route action.
         class Base < Modern::Struct
-          Type = Types.Instance(self)
-
           attr_reader :content_type
 
           def initialize(fields)

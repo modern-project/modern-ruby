@@ -11,7 +11,6 @@ module Modern
         private
 
         def determine_output_converter(request, route)
-          # TODO: handle the wildcard case.
           accept_header = request.env["HTTP_ACCEPT"] || "*/*"
 
           requested_types =

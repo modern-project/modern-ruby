@@ -4,6 +4,7 @@ require "set"
 
 require "modern/struct"
 
+require "modern/descriptor/converters"
 require "modern/descriptor/response"
 require "modern/descriptor/parameters"
 require "modern/descriptor/request_body"
@@ -13,8 +14,6 @@ module Modern
   module Descriptor
     class Route < Modern::Struct
       # TODO: define OpenAPI-style callbacks
-      Type = Types.Instance(self)
-
       TEMPLATE_TOKEN = %r|\{.+\}|
       OPENAPI_CAPTURE = %r|/\{(?<name>.+?)\}|
 
@@ -28,14 +27,14 @@ module Modern
       attribute :deprecated, Types::Strict::Bool.default(false)
       attribute :tags, Types.array_of(Types::Coercible::String)
 
-      attribute :parameters, Types.array_of(Parameters::Base::Type)
-      attribute :request_body, RequestBody::Type.optional.default(nil)
-      attribute :responses, Types.array_of(Response::Type)
+      attribute :parameters, Types.array_of(Parameters::Base)
+      attribute :request_body, RequestBody.optional.default(nil)
+      attribute :responses, Types.array_of(Response)
 
-      attribute :input_converters, Types.array_of(Converters::Input::Base::Type)
-      attribute :output_converters, Types.array_of(Converters::Output::Base::Type)
+      attribute :input_converters, Types.array_of(Modern::Descriptor::Converters::Input::Base)
+      attribute :output_converters, Types.array_of(Modern::Descriptor::Converters::Output::Base)
 
-      attribute :security, Types.array_of(Security::Base::Type)
+      attribute :security, Types.array_of(Security::Base)
       attribute :helpers, Types.array_of(Types.Instance(Module))
       attribute :action, Types::RouteAction
 

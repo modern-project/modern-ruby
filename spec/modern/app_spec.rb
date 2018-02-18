@@ -56,7 +56,7 @@ describe Modern::App do
 
       doc = Openapi3Parser.load(body)
 
-      expect(doc.errors.errors).to eq([])
+      expect(doc.errors.to_a).to eq([])
     end
 
     it "serves a valid OpenAPI3 YAML document at the expected path" do
@@ -70,7 +70,7 @@ describe Modern::App do
 
       doc = Openapi3Parser.load(body)
 
-      expect(doc.errors.errors).to eq([])
+      expect(doc.errors.to_a).to eq([])
     end
   end
 end
