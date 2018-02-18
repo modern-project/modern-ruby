@@ -4,10 +4,10 @@ require 'modern/struct'
 
 module Modern
   module Descriptor
-    def self.from(&block)
+    def self.define(title, version, &block)
       require 'modern/dsl'
 
-      Modern::DSL::Root.build(&block)
+      Modern::DSL::Root.build(title, version, &block)
     end
   end
 end

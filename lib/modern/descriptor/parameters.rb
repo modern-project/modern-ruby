@@ -108,7 +108,6 @@ module Modern
         attribute :required, Types::Strict::Bool.default(false)
 
         attribute :allow_empty_value, Types::Strict::Bool.default(false)
-        attribute :allow_reserved, Types::Strict::Bool.default(false)
 
         attr_reader :parser
 
@@ -125,8 +124,24 @@ module Modern
         def to_openapi3(is_api_key = false)
           super.merge(
             allowEmptyValue: !is_api_key ? description : nil,
-            allowReserved: !is_api_key ? allow_reserved : nil
           ).compact
+        end
+      end
+
+      def self.from_inputs(name, parameter_type, opts)
+        opts = opts.merge(name: name.to_s)
+
+        case parameter_type.to_sym
+        when :path
+          Modern::Descriptor::Parameters:Path.new(opts)
+        when :cookie
+          Modern::Descriptor::Parameters:Cookie.new(opts)
+        when :header
+          Modern::Descriptor::Parameters:Header.new(opts)
+        when :query
+          Modern::Descriptor::Parameters:Query.new(opts)
+        else
+          raise "Unrecognized parameter type '#{parameter_type}'.'"
         end
       end
     end

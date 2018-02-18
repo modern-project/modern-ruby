@@ -43,15 +43,15 @@ module Modern
         def _response(response)
           {
             description: response.description,
-            headers:
-              response.headers.map do |header|
-                [
-                  header.name,
-                  {
-                    description: header.description
-                  }.compact
-                ]
-              end.to_h,
+            # headers:
+            #   response.headers.map do |header|
+            #     [
+            #       header.name,
+            #       {
+            #         description: header.description
+            #       }.compact
+            #     ]
+            #   end.to_h,
             content:
               response.content_by_type.map do |content_type, content|
                 [

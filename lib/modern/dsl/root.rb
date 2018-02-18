@@ -6,16 +6,16 @@ require 'modern/dsl/scope'
 module Modern
   module DSL
     class Root < Scope
-      DEFAULT_VALUE = Modern::Descriptor::Core.new(info: Info::DEFAULT_VALUE)
-
       attr_reader :descriptor
 
-      def initialize(descriptor = DEFAULT_VALUE)
-        super(descriptor, {})
+      def initialize(descriptor)
+        super(descriptor, nil)
       end
 
       def info(&block)
-        @descriptor = @descriptor.copy(info: Info.build(&block).to_h)
+        @descriptor = @descriptor.copy(
+          info: Info.build(descriptor.info.title, descriptor.info.version, &block).to_h
+        )
       end
 
       def input_converter(media_type_or_converter, &block)
@@ -50,8 +50,9 @@ module Modern
         end
       end
 
-      def self.build(&block)
-        Docile.dsl_eval(Root.new, &block).descriptor
+      def self.build(title, version, &block)
+        d = Modern::Descriptor::Core.new(info: { title: title, version: version })
+        Docile.dsl_eval(Root.new(d), &block).descriptor
       end
     end
   end
