@@ -10,6 +10,8 @@ module Modern
   #
   # https://discourse.dry-rb.org/t/dry-struct-reusing-a-set-of-common-attributes/315/3
   class Services < Modern::Struct
-    attribute :base_logger, (Types.Instance(Ougai::Logger).default { Ougai::Logger.new($stderr) })
+    LoggerType = Types.Instance(Ougai::Logger) | Types.Instance(Ougai::ChildLogger)
+
+    attribute :base_logger, (LoggerType.default { Ougai::Logger.new($stderr) })
   end
 end
