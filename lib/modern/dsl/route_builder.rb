@@ -22,9 +22,7 @@ module Modern
           tags: settings.tags,
           parameters: settings.parameters,
           request_body: nil,
-          responses: [
-            Modern::Descriptor::Response.new(http_code: :default)
-          ],
+          responses: [settings.default_response],
           input_converters: settings.input_converters,
           output_converters: settings.output_converters,
           security: settings.security,
@@ -61,7 +59,9 @@ module Modern
       end
 
       def response(http_code, &block)
-        resp = ResponseBuilder.evaluate(http_code, &block)
+        existing_response = @value.responses.find { |r| r.http_code == http_code }
+
+        resp = ResponseBuilder.evaluate(existing_response || http_code, &block)
         @value = @value.copy(responses: @value.responses + [resp])
       end
 

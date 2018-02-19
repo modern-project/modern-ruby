@@ -30,6 +30,11 @@ module Modern
         @descriptor = _scope(path_segments: @settings.path_segments + p.split("/"), &block)
       end
 
+      def default_response(&block)
+        resp = ResponseBuilder.evaluate(@settings.default_response, &block)
+        @settings = @settings.copy(default_response: resp)
+      end
+
       def deprecate!
         @settings = @settings.copy(deprecated: true)
       end

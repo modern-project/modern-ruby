@@ -10,8 +10,13 @@ module Modern
     class ResponseBuilder
       attr_reader :value
 
-      def initialize(http_code)
-        @value = Modern::Descriptor::Response.new(http_code: http_code)
+      def initialize(http_code_or_response)
+        @value =
+          if http_code_or_response.is_a?(Modern::Descriptor::Response)
+            http_code_or_response
+          else
+            Modern::Descriptor::Response.new(http_code: http_code_or_response)
+          end
       end
 
       def description(s)
@@ -26,8 +31,8 @@ module Modern
         @value = @value.copy(content: @value.content + [new_content])
       end
 
-      def self.evaluate(http_code, &block)
-        builder = ResponseBuilder.new(http_code)
+      def self.evaluate(http_code_or_response, &block)
+        builder = ResponseBuilder.new(http_code_or_response)
         Docile.dsl_eval(builder, &block)
         builder.value
       end

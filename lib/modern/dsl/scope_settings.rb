@@ -24,6 +24,10 @@ module Modern
 
       attribute :parameters, Types.array_of(Modern::Descriptor::Parameters::Base)
 
+      attribute :default_response, Modern::Descriptor::Response.optional.default(
+        Modern::Descriptor::Response.new(http_code: :default)
+      )
+
       # TODO: this code gets way less gross when we get Types.Map
       attribute :input_converters, Types.array_of(Modern::Descriptor::Converters::Input::Base)
       attribute :output_converters, Types.array_of(Modern::Descriptor::Converters::Output::Base)
