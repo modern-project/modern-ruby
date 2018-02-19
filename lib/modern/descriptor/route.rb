@@ -65,8 +65,15 @@ module Modern
           unless @responses_by_code.key?(:default)
 
         nondefault_content = @content_types - @responses_by_code[:default].content.map(&:media_type).to_set
-        raise "Missing content types in default HTTP response for #{id}: #{nondefault_content.to_a.join(', ')}" \
-            unless nondefault_content.empty?
+        # TODO: figure out how to better validate these
+        #       This might be a larger-scale problem. The DSL creates a route with this, and you can end
+        #       up in a case where you try to add a new content type to another response type. This causes
+        #       the commented test below to fail unless you defined the :default response, with that content
+        #       type, higher in the DSL. We might need some sort of intermediate builder class, or a way to
+        #       squelch this error somehow...
+        # require 'pry'; binding.pry
+        # raise "Missing content types in default HTTP response for #{id}: #{nondefault_content.to_a.join(', ')}" \
+        #     unless nondefault_content.empty?
 
         @input_converters_by_type = input_converters.map { |c| [c.media_type.downcase.strip, c] }.to_h.freeze
         @output_converters_by_type = output_converters.map { |c| [c.media_type.downcase.strip, c] }.to_h.freeze
