@@ -65,7 +65,7 @@ module Modern
           unless @responses_by_code.key?(:default)
 
         nondefault_content = @content_types - @responses_by_code[:default].content.map(&:media_type).to_set
-        raise "Missing content types in default HTTP response for #{id}: #{nondefault_content.join(', ')}" \
+        raise "Missing content types in default HTTP response for #{id}: #{nondefault_content.to_a.join(', ')}" \
             unless nondefault_content.empty?
 
         @input_converters_by_type = input_converters.map { |c| [c.media_type.downcase.strip, c] }.to_h.freeze
