@@ -10,9 +10,13 @@ module Modern
 
         def parse_parameters(request, route)
           match = route.path_matcher.match(request.path)
-          route_captures = match.names.map{ |n| [n.to_s, match[n]] }.to_h
+          if match.nil?
+            {}
+          else
+            route_captures = match.names.map{ |n| [n.to_s, match[n]] }.to_h
 
-          route.parameters.map { |p| [p.name, p.retrieve(request, route_captures)] }.to_h
+            route.parameters.map { |p| [p.name, p.retrieve(request, route_captures)] }.to_h
+          end
         end
 
         def parse_request_body(request, route)
