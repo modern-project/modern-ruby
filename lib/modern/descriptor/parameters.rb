@@ -133,13 +133,13 @@ module Modern
 
         case parameter_type.to_sym
         when :path
-          Modern::Descriptor::Parameters:Path.new(opts)
+          Modern::Descriptor::Parameters::Path.new(opts)
         when :cookie
-          Modern::Descriptor::Parameters:Cookie.new(opts)
+          Modern::Descriptor::Parameters::Cookie.new(opts)
         when :header
-          Modern::Descriptor::Parameters:Header.new(opts)
+          Modern::Descriptor::Parameters::Header.new(opts)
         when :query
-          Modern::Descriptor::Parameters:Query.new(opts)
+          Modern::Descriptor::Parameters::Query.new(opts)
         else
           raise "Unrecognized parameter type '#{parameter_type}'.'"
         end
