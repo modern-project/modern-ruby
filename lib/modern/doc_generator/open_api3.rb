@@ -41,7 +41,6 @@ module Modern
       end
 
       def both(descriptor)
-        h = hash(descriptor)
         j = JSON.pretty_generate(hash(descriptor))
 
         {
@@ -116,9 +115,6 @@ module Modern
 
       def _info(obj)
         obj.to_h.compact
-      end
-
-      def _servers(obj)
       end
 
       def _components(descriptor)

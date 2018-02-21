@@ -8,12 +8,13 @@ require 'modern/types'
 module Modern
   class Struct < Dry::Struct
     module Copy
+      # This implementation is necessary because the "fast" way (hash, merge, recreate)
+      # WILL EAT YOUR TYPE DATA. This is the only way I can find to copy-but-change an
+      # object that doesn't.
+      #
+      # Computers are bad.
       def copy(fields = {})
-        self.class.new(to_h.merge(fields))
-      end
-
-      def deep_copy(fields = {})
-        self.class.new(to_h.deeper_merge(fields))
+        self.class[self.class.attribute_names.map { |n| [n, self[n]] }.to_h.merge(fields)]
       end
     end
 

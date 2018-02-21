@@ -26,8 +26,6 @@ module Modern
       # the validator can then store a User object (or whatever) into it for use
       # in the actual application.
       class Base < Modern::Struct
-        constructor_type :schema
-
         attribute :name, Types::Strict::String
         attribute :description, Types::Strict::String.optional.default(nil)
         attribute :validation, Types::SecurityAction

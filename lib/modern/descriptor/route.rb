@@ -50,7 +50,7 @@ module Modern
       attr_reader :request_container_class
 
       def initialize(fields)
-        super(fields)
+        super
 
         @path_matcher = Regexp.new("^" + path.gsub(OPENAPI_CAPTURE, "/(?<\\k<name>>[^/]+)") + "$")
         @route_tokens =
@@ -64,7 +64,7 @@ module Modern
         raise "Cannot create a Route without a Response where http_code = :default." \
           unless @responses_by_code.key?(:default)
 
-        nondefault_content = @content_types - @responses_by_code[:default].content.map(&:media_type).to_set
+        _nondefault_content = @content_types - @responses_by_code[:default].content.map(&:media_type).to_set
         # TODO: figure out how to better validate these
         #       This might be a larger-scale problem. The DSL creates a route with this, and you can end
         #       up in a case where you try to add a new content type to another response type. This causes
