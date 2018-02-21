@@ -7,6 +7,7 @@ require "modern/struct"
 require "modern/core_ext/array"
 
 require "modern/descriptor/info"
+require "modern/descriptor/server"
 require "modern/descriptor/converters"
 require "modern/descriptor/route"
 
@@ -18,6 +19,7 @@ module Modern
     # OpenAPI documentation and design routing accordingly.
     class Core < Modern::Struct
       attribute :info, Modern::Descriptor::Info
+      attribute :servers, Types.array_of(Server)
 
       attribute :routes, Types.array_of(Modern::Descriptor::Route)
 

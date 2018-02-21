@@ -55,9 +55,10 @@ module Modern
           openapi: OPENAPI_VERSION,
 
           info: _info(descriptor.info),
+          servers: descriptor.servers.empty? ? nil : descriptor.servers.map(&:to_h),
           paths: _paths(descriptor),
           components: _components(descriptor)
-        }
+        }.compact
 
         ret
       end
@@ -115,6 +116,9 @@ module Modern
 
       def _info(obj)
         obj.to_h.compact
+      end
+
+      def _servers(obj)
       end
 
       def _components(descriptor)

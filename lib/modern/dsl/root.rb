@@ -18,6 +18,14 @@ module Modern
         )
       end
 
+      def server(url, description: nil)
+        raise "url is required for a server declaration." if url.nil?
+
+        @descriptor = @descriptor.copy(
+          servers: @descriptor.servers + [Modern::Descriptor::Server.new(url: url, description: description)]
+        )
+      end
+
       def input_converter(media_type_or_converter, &block)
         if media_type_or_converter.is_a?(Modern::Descriptor::Converters::Input::Base)
           @descriptor = @descriptor.copy(

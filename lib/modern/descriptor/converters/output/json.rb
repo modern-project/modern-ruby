@@ -24,11 +24,11 @@ module Modern
               end
 
             if retval.respond_to?(:as_json)
-              retval.as_json
+              ::JSON.generate(retval.as_json)
             elsif retval.respond_to?(:to_json)
               retval.to_json
             else
-              JSON.generate(retval)
+              ::JSON.generate(retval)
             end
           end
         )
