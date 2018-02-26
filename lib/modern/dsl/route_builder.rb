@@ -79,6 +79,10 @@ module Modern
         end
       end
 
+      def clear_input_converters!
+        @value = @value.copy(input_converters: [])
+      end
+
       def output_converter(media_type_or_converter, &block)
         if media_type_or_converter.is_a?(Modern::Descriptor::Converters::Output::Base)
           @value = @value.copy(output_converters: @value.output_converters + [media_type_or_converter])
@@ -91,6 +95,10 @@ module Modern
         else
           raise "must pass a String and block or a Modern::Descriptor::Converters::Output::Base."
         end
+      end
+
+      def clear_output_converters!
+        @value = @value.copy(output_converters: [])
       end
 
       def clear_security!

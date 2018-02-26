@@ -76,6 +76,10 @@ module Modern
         end
       end
 
+      def clear_input_converters!
+        @settings = @settings.copy(input_converters: [])
+      end
+
       def output_converter(media_type_or_converter, &block)
         if media_type_or_converter.is_a?(Modern::Descriptor::Converters::Output::Base)
           @settings = @settings.copy(output_converters: @settings.output_converters + [media_type_or_converter])
@@ -88,6 +92,10 @@ module Modern
         else
           raise "must pass a String and block or a Modern::Descriptor::Converters::Output::Base."
         end
+      end
+
+      def clear_output_converters!
+        @settings = @settings.copy(output_converters: [])
       end
 
       def route(id, http_method, path = nil, &block)
