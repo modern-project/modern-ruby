@@ -13,7 +13,7 @@ module Modern
             [
               path,
               routes_by_method.map do |method, route|
-                [method.downcase, _operation(route, descriptor)]
+                [method.downcase, _operation(route)]
               end.to_h
             ]
           end.to_h

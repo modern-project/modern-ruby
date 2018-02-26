@@ -4,7 +4,7 @@ module Modern
   module DocGenerator
     class OpenAPI3
       module Operations
-        def _operation(route, descriptor)
+        def _operation(route)
           {
             operationId: route.id,
             summary: route.summary,
@@ -15,7 +15,7 @@ module Modern
             security: route.security.map { |s| _security_requirement(s) },
 
             parameters: route.parameters.map { |p| _parameter(p) },
-            requestBody: route.request_body.nil? ? nil : _request_body(route, descriptor),
+            requestBody: _request_body(route),
             responses:
               route.responses_by_code.map do |code, response|
                 [code, _response(response)]
@@ -41,9 +41,35 @@ module Modern
           )
         end
 
-        def _request_body(route, descriptor)
-          # require 'pry'; binding.pry
-          nil
+        def _request_body(route)
+          body = route.request_body
+
+          if body.nil?
+            nil
+          else
+            schema =
+              if body.type.nil?
+                nil
+              elsif body.type.is_a?(Class) && body.type.ancestors.include?(Dry::Struct)
+                _struct_ref(body.type)
+              else
+                # TODO: make this less wasteful (see _response)
+                _build_schema_value({}, {}, body.type)
+              end
+
+            {
+              required: body.required,
+              content:
+                route.input_converters.map(&:media_type).map do |content_type|
+                  [
+                    content_type,
+                    {
+                      schema: schema
+                    }.compact
+                  ]
+                end.to_h.compact
+            }
+          end
         end
 
         def _response(response)
