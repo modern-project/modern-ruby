@@ -51,8 +51,6 @@ module Modern
       @router = Modern::App::TrieRouter.new(
         routes: Modern::DocGenerator::OpenAPI3.new.decorate_with_openapi_routes(@configuration, @descriptor)
       )
-      @input_converters = @descriptor.input_converters.map { |c| [c.media_type.downcase.strip, c] }.to_h.freeze
-      @output_converters = @descriptor.output_converters.map { |c| [c.media_type.downcase.strip, c] }.to_h.freeze
     end
 
     def call(env)

@@ -84,6 +84,8 @@ shared_context "request body routes" do
           ),
           required: true
         ),
+      input_converters: [Modern::Descriptor::Converters::Input::JSON],
+      output_converters: [Modern::Descriptor::Converters::Output::JSON],
       action:
         proc do
           body
@@ -113,6 +115,8 @@ shared_context "request body routes" do
           type: RequestBodyTest::RetBody,
           required: true
         ),
+      input_converters: [Modern::Descriptor::Converters::Input::JSON],
+      output_converters: [Modern::Descriptor::Converters::Output::JSON],
       action:
         proc do
           body
@@ -141,6 +145,8 @@ shared_context "request body routes" do
           type: RequestBodyTest::Parent,
           required: true
         ),
+      input_converters: [Modern::Descriptor::Converters::Input::JSON],
+      output_converters: [Modern::Descriptor::Converters::Output::JSON],
       action:
         proc do
           body
@@ -174,6 +180,8 @@ shared_context "security routes" do
           ]
         )
       ],
+      input_converters: [Modern::Descriptor::Converters::Input::JSON],
+      output_converters: [Modern::Descriptor::Converters::Output::JSON],
       action:
         proc do
           { success: true }
@@ -209,6 +217,8 @@ shared_context "security routes" do
           ]
         )
       ],
+      input_converters: [Modern::Descriptor::Converters::Input::JSON],
+      output_converters: [Modern::Descriptor::Converters::Output::JSON],
       action:
         proc do
           { success: true }
@@ -242,6 +252,8 @@ shared_context "security routes" do
           ]
         )
       ],
+      input_converters: [Modern::Descriptor::Converters::Input::JSON],
+      output_converters: [Modern::Descriptor::Converters::Output::JSON],
       action:
         proc do
           { success: true }
@@ -276,6 +288,8 @@ shared_context "security routes" do
           ]
         )
       ],
+      input_converters: [Modern::Descriptor::Converters::Input::JSON],
+      output_converters: [Modern::Descriptor::Converters::Output::JSON],
       action:
         proc do
           { success: true }
@@ -310,6 +324,8 @@ shared_context "security routes" do
           ]
         )
       ],
+      input_converters: [Modern::Descriptor::Converters::Input::JSON],
+      output_converters: [Modern::Descriptor::Converters::Output::JSON],
       action:
         proc do
           { success: true }
@@ -352,6 +368,8 @@ shared_context "parameter routes" do
           ]
         )
       ],
+      input_converters: [Modern::Descriptor::Converters::Input::JSON],
+      output_converters: [Modern::Descriptor::Converters::Output::JSON],
       action:
         proc do
           response.bypass!
@@ -396,6 +414,8 @@ shared_context "parameter routes" do
           ]
         )
       ],
+      input_converters: [Modern::Descriptor::Converters::Input::JSON],
+      output_converters: [Modern::Descriptor::Converters::Output::JSON],
       action:
         proc do
           response.bypass!
@@ -440,6 +460,8 @@ shared_context "parameter routes" do
           ]
         )
       ],
+      input_converters: [Modern::Descriptor::Converters::Input::JSON],
+      output_converters: [Modern::Descriptor::Converters::Output::JSON],
       action:
         proc do
           response.bypass!
@@ -478,6 +500,8 @@ shared_context "parameter routes" do
           ]
         )
       ],
+      input_converters: [Modern::Descriptor::Converters::Input::JSON],
+      output_converters: [Modern::Descriptor::Converters::Output::JSON],
       action:
         proc do
           response.bypass!
@@ -506,6 +530,8 @@ shared_context "content routes" do
           ]
         )
       ],
+      input_converters: [Modern::Descriptor::Converters::Input::JSON],
+      output_converters: [Modern::Descriptor::Converters::Output::JSON],
       action:
         proc do |_req, _res, _params, _body|
           5
@@ -531,6 +557,8 @@ shared_context "content routes" do
           ]
         )
       ],
+      input_converters: [Modern::Descriptor::Converters::Input::JSON],
+      output_converters: [Modern::Descriptor::Converters::Output::JSON],
       action:
         proc do |_req, _res, _params, _body|
           "5"
@@ -559,6 +587,8 @@ shared_context "content routes" do
           ]
         )
       ],
+      input_converters: [Modern::Descriptor::Converters::Input::JSON],
+      output_converters: [Modern::Descriptor::Converters::Output::JSON],
       action:
         proc do |_req, _res, _params, _body|
           { a: "foo", b: "10" }
@@ -587,6 +617,8 @@ shared_context "content routes" do
           ]
         )
       ],
+      input_converters: [Modern::Descriptor::Converters::Input::JSON],
+      output_converters: [Modern::Descriptor::Converters::Output::JSON],
       action:
         proc do |_req, _res, _params, _body|
           { a: "foo", b: nil }
@@ -612,6 +644,8 @@ shared_context "content routes" do
           ]
         )
       ],
+      input_converters: [Modern::Descriptor::Converters::Input::JSON],
+      output_converters: [Modern::Descriptor::Converters::Output::JSON],
       action:
         proc do |_req, _res, _params, _body|
           { a: "foo", b: "10" }
@@ -637,6 +671,8 @@ shared_context "content routes" do
           ]
         )
       ],
+      input_converters: [Modern::Descriptor::Converters::Input::JSON],
+      output_converters: [Modern::Descriptor::Converters::Output::JSON],
       action:
         proc do |_req, _res, _params, _body|
           { a: "foo", b: nil }
@@ -665,6 +701,8 @@ shared_context "helpers routes" do
           ]
         )
       ],
+      input_converters: [Modern::Descriptor::Converters::Input::JSON],
+      output_converters: [Modern::Descriptor::Converters::Output::JSON],
       action:
         proc do
           do_a_help

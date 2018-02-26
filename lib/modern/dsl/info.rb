@@ -22,11 +22,11 @@ module Modern
       end
 
       def contact(name: nil, url: nil, email: nil)
-        @value = @value.deep_copy(contact: { name: name, url: url, email: email }.compact)
+        @value = @value.copy(contact: { name: name, url: url, email: email }.compact)
       end
 
       def license(name, url: nil)
-        @value = @value.deep_copy(license: { name: name, url: url }.compact)
+        @value = @value.copy(license: { name: name, url: url }.compact)
       end
 
       def self.build(title, version, &block)

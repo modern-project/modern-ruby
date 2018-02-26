@@ -18,12 +18,6 @@ describe Modern::Descriptor::Parameters do
         header_route,
         cookie_route,
         path_route
-      ],
-      input_converters: [
-        Modern::Descriptor::Converters::Input::JSON
-      ],
-      output_converters: [
-        Modern::Descriptor::Converters::Output::JSON
       ]
     )
   end

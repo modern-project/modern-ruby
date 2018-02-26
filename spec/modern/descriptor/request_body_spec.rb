@@ -18,12 +18,6 @@ describe Modern::Descriptor::RequestBody do
       routes: [
         required_body_hash_route,
         required_body_struct_route
-      ],
-      input_converters: [
-        Modern::Descriptor::Converters::Input::JSON
-      ],
-      output_converters: [
-        Modern::Descriptor::Converters::Output::JSON
       ]
     )
   end

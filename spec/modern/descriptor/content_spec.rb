@@ -22,9 +22,6 @@ describe Modern::Descriptor::Content do
         bad_route_hash,
         good_route_struct,
         bad_route_struct
-      ],
-      output_converters: [
-        Modern::Descriptor::Converters::Output::JSON
       ]
     )
   end

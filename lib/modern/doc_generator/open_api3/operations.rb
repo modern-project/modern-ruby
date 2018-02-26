@@ -4,7 +4,7 @@ module Modern
   module DocGenerator
     class OpenAPI3
       module Operations
-        def _operation(route)
+        def _operation(route, descriptor)
           {
             operationId: route.id,
             summary: route.summary,
@@ -15,11 +15,12 @@ module Modern
             security: route.security.map { |s| _security_requirement(s) },
 
             parameters: route.parameters.map { |p| _parameter(p) },
-            requestBody: nil,
+            requestBody: route.request_body.nil? ? nil : _request_body(route, descriptor),
             responses:
               route.responses_by_code.map do |code, response|
                 [code, _response(response)]
               end.to_h,
+            # TODO: implement callbacks
             callbacks: nil
           }.compact
         end
@@ -38,6 +39,11 @@ module Modern
           parameter.to_openapi3.merge(
             schema: _build_schema_value({}, {}, parameter.type)
           )
+        end
+
+        def _request_body(route, descriptor)
+          # require 'pry'; binding.pry
+          nil
         end
 
         def _response(response)

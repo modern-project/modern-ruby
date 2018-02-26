@@ -23,16 +23,10 @@ module Modern
 
       attribute :routes, Types.array_of(Modern::Descriptor::Route)
 
-      attribute :input_converters, Types.array_of(Converters::Input::Base)
-      attribute :output_converters, Types.array_of(Converters::Output::Base)
-
       attr_reader :securities_by_name
       attr_reader :root_schemas
       attr_reader :routes_by_id
       attr_reader :routes_by_path
-
-      attr_reader :input_converters_by_type
-      attr_reader :output_converters_by_type
 
       def initialize(fields)
         super
@@ -63,9 +57,6 @@ module Modern
         @routes_by_path.freeze
 
         @routes_by_id = routes.map { |route| [route.id, route] }.to_h.freeze
-
-        @input_converters_by_type = input_converters.map { |c| [c.media_type.downcase.strip, c] }.to_h.freeze
-        @output_converters_by_type = output_converters.map { |c| [c.media_type.downcase.strip, c] }.to_h.freeze
       end
     end
   end

@@ -22,11 +22,6 @@ module Modern
               requested_types.find do |c|
                 File.fnmatch(c, oc.media_type)
               end
-            end ||
-            @descriptor.output_converters.find do |oc|
-              requested_types.find do |c|
-                File.fnmatch(c, oc.media_type)
-              end
             end
 
           raise Errors::NotAcceptableError, "No servable types in Accept header: #{accept_header || 'nil'}" \

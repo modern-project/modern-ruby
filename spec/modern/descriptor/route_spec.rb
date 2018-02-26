@@ -12,9 +12,6 @@ describe Modern::Descriptor::Route do
         ),
         routes: [
           helper_route
-        ],
-        output_converters: [
-          Modern::Descriptor::Converters::Output::JSON
         ]
       )
     end

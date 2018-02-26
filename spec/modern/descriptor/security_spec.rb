@@ -19,9 +19,6 @@ describe Modern::Descriptor::Security do
         apikey_query,
         apikey_header,
         apikey_cookie
-      ],
-      output_converters: [
-        Modern::Descriptor::Converters::Output::JSON
       ]
     )
   end
