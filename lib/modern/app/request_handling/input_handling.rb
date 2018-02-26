@@ -9,13 +9,13 @@ module Modern
         private
 
         def parse_parameters(request, route)
-          match = route.path_matcher.match(request.path)
+          match = route.path_matcher.match(request.path_info)
           if match.nil?
             {}
           else
             route_captures = match.names.map{ |n| [n.to_s, match[n]] }.to_h
 
-            route.parameters.map { |p| [p.name, p.retrieve(request, route_captures)] }.to_h
+            route.parameters.map { |p| [p.name.to_sym, p.retrieve(request, route_captures)] }.to_h
           end
         end
 

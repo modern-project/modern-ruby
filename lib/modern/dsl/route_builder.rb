@@ -54,8 +54,9 @@ module Modern
         @value = @value.copy(parameters: @value.parameters + [param])
       end
 
-      def request_body(type, opts = {})
-        @value = @value.copy(request_body: Modern::Descriptor::RequestBody.new(opts.merge(type: type)))
+      def request_body(type, opts = { required: true })
+        opts = { required: true }.merge(opts).merge(type: type)
+        @value = @value.copy(request_body: Modern::Descriptor::RequestBody.new(opts))
       end
 
       def response(http_code, &block)
