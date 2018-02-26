@@ -23,6 +23,15 @@ module Modern
           @request = request
           @response = response
         end
+
+        def with_logger_fields(fields = {})
+          original_logger = @logger
+          @logger = original_logger.child(fields)
+
+          yield
+
+          @logger = original_logger
+        end
       end
 
       # Encapsulates all portions of the request, including params and body,
