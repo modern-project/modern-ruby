@@ -10,7 +10,7 @@ module Modern
             summary: route.summary,
             description: route.description,
             deprecated: route.deprecated,
-            tags: route.tags,
+            tags: route.tags.uniq,
 
             security: route.security.map { |s| _security_requirement(s) },
 
