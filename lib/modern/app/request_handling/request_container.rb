@@ -28,9 +28,11 @@ module Modern
           original_logger = @logger
           @logger = original_logger.child(fields)
 
-          yield
+          ret = yield
 
           @logger = original_logger
+
+          ret
         end
       end
 
