@@ -5,9 +5,9 @@ module Modern
   class Redirect < Exception
     attr_reader :redirect_to
 
-    def initialize(target)
-      raise "Redirects require a target." if target.nil?
-      @target = target
+    def initialize(redirect_to)
+      raise "Redirects require a target." if redirect_to.nil?
+      @redirect_to = redirect_to
     end
 
     def status

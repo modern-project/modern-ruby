@@ -66,7 +66,7 @@ module Modern
         process_request(request, response, route)
         response.finish
       rescue Modern::Redirect => redirect
-        response.redirect(redirect.target, redirect.status)
+        response.redirect(redirect.redirect_to, redirect.status)
       rescue Modern::Errors::WebError => err
         catch_web_error(response, err)
       rescue StandardError => err
