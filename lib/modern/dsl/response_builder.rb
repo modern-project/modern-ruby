@@ -33,7 +33,7 @@ module Modern
 
       def self.evaluate(http_code_or_response, &block)
         builder = ResponseBuilder.new(http_code_or_response)
-        Docile.dsl_eval(builder, &block)
+        builder.instance_exec(&block)
         builder.value
       end
     end

@@ -30,7 +30,9 @@ module Modern
       end
 
       def self.build(title, version, &block)
-        Docile.dsl_eval(Info.new(title, version), &block).value
+        i = Info.new(title, version)
+        i.instance_exec(&block)
+        i.value
       end
     end
   end

@@ -12,9 +12,10 @@ module Modern
       attr_reader :value
 
       def initialize(id, http_method, path, settings)
+        new_path_segments = path&.split("/") || []
         @value = Modern::Descriptor::Route.new(
           id: id.to_s,
-          path: "/" + ([settings.path_segments] + [path]).flatten.compact.join("/"),
+          path: "/" + ([settings.path_segments] + new_path_segments).flatten.compact.join("/"),
           http_method: http_method.upcase,
           summary: nil,
           description: nil,
@@ -120,7 +121,7 @@ module Modern
 
       def self.evaluate(id, http_method, path, settings, &block)
         builder = RouteBuilder.new(id, http_method, path, settings)
-        Docile.dsl_eval(builder, &block)
+        builder.instance_exec(&block)
 
         builder.value
       end

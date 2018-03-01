@@ -14,11 +14,12 @@ require 'ice_nine'
 module Modern
   module DSL
     class Scope
+      attr_reader :settings
       attr_reader :descriptor
 
       def initialize(descriptor, settings = nil)
         @descriptor = descriptor
-        @settings = settings || ScopeSettings.new
+        @settings = settings&.dup || ScopeSettings.new
       end
 
       def capsule(cap)
@@ -27,7 +28,11 @@ module Modern
       end
 
       def path(p, &block)
-        @descriptor = _scope(path_segments: @settings.path_segments + p.split("/"), &block)
+        p_segs = p.split("/")
+        new_path_segments = ([@settings.path_segments] + p_segs).flatten
+        puts "I: #{@settings.path_segments.inspect} + #{p_segs.inspect}"
+        @descriptor = _scope(path_segments: new_path_segments, &block)
+        puts "O: #{@settings.path_segments.inspect}"
       end
 
       def default_response(&block)
@@ -99,7 +104,7 @@ module Modern
       end
 
       def route(id, http_method, path = nil, &block)
-        route = RouteBuilder.evaluate(id, http_method, path, @settings, &block)
+        route = RouteBuilder.evaluate(id, http_method, path, @settings.dup, &block)
         @descriptor = @descriptor.copy(routes: @descriptor.routes + [route])
       end
 
@@ -125,7 +130,7 @@ module Modern
 
       def self.evaluate(descriptor, settings, &block)
         scope = Scope.new(descriptor, settings)
-        Docile.dsl_eval(scope, &block)
+        scope.instance_exec(&block)
 
         scope.descriptor
       end
@@ -133,7 +138,8 @@ module Modern
       private
 
       def _scope(new_settings = {}, &block)
-        Scope.evaluate(descriptor, @settings.copy(new_settings), &block)
+        ret = Scope.evaluate(descriptor, @settings.copy(new_settings), &block)
+        ret
       end
     end
   end

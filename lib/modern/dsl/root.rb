@@ -28,7 +28,10 @@ module Modern
 
       def self.build(title, version, &block)
         d = Modern::Descriptor::Core.new(info: { title: title, version: version })
-        Docile.dsl_eval(Root.new(d), &block).descriptor
+
+        r = Root.new(d)
+        r.instance_exec(&block)
+        r.descriptor
       end
     end
   end
