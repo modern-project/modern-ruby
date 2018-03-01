@@ -30,9 +30,7 @@ module Modern
       def path(p, &block)
         p_segs = p.split("/")
         new_path_segments = ([@settings.path_segments] + p_segs).flatten
-        puts "I: #{@settings.path_segments.inspect} + #{p_segs.inspect}"
         @descriptor = _scope(path_segments: new_path_segments, &block)
-        puts "O: #{@settings.path_segments.inspect}"
       end
 
       def default_response(&block)
