@@ -32,7 +32,7 @@ module Modern
 
         params = parse_parameters(request, route)
         body = parse_request_body(request, route) unless route.request_body.nil?
-        raise Errors::BadRequestError \
+        raise Errors::BadRequestError, "Request body is required." \
           if body.nil? && route.request_body&.required
 
         begin
