@@ -83,6 +83,8 @@ module Modern
 
           if !registered_type.nil?
             registered_type
+          elsif entry.is_a?(Class) && entry < Dry::Struct
+            _struct_ref(entry)
           elsif entry.is_a?(Dry::Types::Sum::Constrained)
             if entry.left.type.primitive == NilClass
               # it's a nullable field
@@ -109,7 +111,7 @@ module Modern
           elsif entry.is_a?(Dry::Types::Definition)
             primitive = entry.primitive
 
-            if primitive.ancestors.include?(Dry::Struct)
+            if primitive < Dry::Struct
               # TODO: make sure I'm understanding this correctly
               #       It feels weird to have to oneOf a $ref, but I can't figure out a
               #       syntax that doesn't require it.
@@ -120,9 +122,9 @@ module Modern
                   _struct_ref(primitive)
                 ]
               }
-            elsif primitive.ancestors.include?(Hash)
+            elsif primitive < Hash
               _build_object_from_schema(ret, name_to_class, entry.member_types)
-            elsif primitive.ancestors.include?(Array)
+            elsif primitive < Array
               {
                 type: "array",
                 items: _build_schema_value(ret, name_to_class, entry.member)
