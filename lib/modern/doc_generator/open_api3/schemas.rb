@@ -105,8 +105,8 @@ module Modern
             #       http://dry-rb.org/gems/dry-types/constraints/
 
             _build_schema_value(ret, name_to_class, entry.type)
-          elsif entry.is_a?(Dry::Types::Default)
-            # this just unwraps the default value
+          elsif entry.is_a?(Dry::Types::Default) || entry.is_a?(Dry::Struct::Constructor) || entry.is_a?(Dry::Types::Constructor)
+            # this just unwraps the underlying value
             _build_schema_value(ret, name_to_class, entry.type)
           elsif entry.is_a?(Dry::Types::Definition)
             primitive = entry.primitive
