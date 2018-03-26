@@ -42,6 +42,8 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "content-type", "~> 0.0.1"
   spec.add_runtime_dependency "http", "~> 3.0"
 
+  spec.add_runtime_dependency "activemodel", "~> 5.1"
+  spec.add_runtime_dependency "activesupport", "~> 5.1"
   spec.add_runtime_dependency "deep_dup", "~> 0.0.3"
   spec.add_runtime_dependency "deep_merge", "~> 1.2"
   spec.add_runtime_dependency "diff-lcs", "~> 1.3"
