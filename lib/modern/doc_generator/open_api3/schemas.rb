@@ -31,10 +31,17 @@ module Modern
           ret = {}
           name_to_class = {}
 
-          descriptor.root_schemas \
-                    .select { |type_or_structclass| type_or_structclass.is_a?(Class) } \
-                    .each do |structclass|
+          schema_entries =
+            descriptor.root_schemas.partition do |type_or_structclass|
+              type_or_structclass.is_a?(Class)
+            end
+
+          schema_entries.first.each do |structclass|
             _build_struct(ret, name_to_class, structclass)
+          end
+
+          schema_entries.last.each do |dt|
+            _build_schema_value(ret, name_to_class, dt)
           end
 
           ret
@@ -84,11 +91,17 @@ module Modern
           if !registered_type.nil?
             registered_type
           elsif entry.is_a?(Class) && entry < Dry::Struct
+            _build_struct(ret, name_to_class, entry)
             _struct_ref(entry)
-          elsif entry.is_a?(Dry::Types::Sum::Constrained)
+          elsif entry.is_a?(Dry::Types::Array::Member) && entry.options.key?(:member)
+            _build_schema_value(ret, name_to_class, entry.options[:member])
+          elsif entry.is_a?(Dry::Types::Sum)
             if entry.left.type.primitive == NilClass
               # it's a nullable field
               _build_schema_value(ret, name_to_class, entry.right).merge(nullable: true)
+            elsif entry.right.type.primitive == NilClass
+              # it's a backwards nullable field
+              _build_schema_value(ret, name_to_class, entry.left).merge(nullable: true)
             else
               {
                 anyOf: _flatten_any_of(
@@ -108,6 +121,8 @@ module Modern
           elsif entry.is_a?(Dry::Types::Default) || entry.is_a?(Dry::Struct::Constructor) || entry.is_a?(Dry::Types::Constructor)
             # this just unwraps the underlying value
             _build_schema_value(ret, name_to_class, entry.type)
+          elsif entry.is_a?(Dry::Types::Enum)
+            _build_schema_value(ret, name_to_class, entry.type).merge(enum: entry.values)
           elsif entry.is_a?(Dry::Types::Definition)
             primitive = entry.primitive
 
@@ -122,9 +137,9 @@ module Modern
                   _struct_ref(primitive)
                 ]
               }
-            elsif primitive < Hash
+            elsif primitive <= Hash
               _build_object_from_schema(ret, name_to_class, entry.member_types)
-            elsif primitive < Array
+            elsif primitive <= Array
               {
                 type: "array",
                 items: _build_schema_value(ret, name_to_class, entry.member)
