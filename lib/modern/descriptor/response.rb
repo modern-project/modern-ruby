@@ -10,7 +10,7 @@ module Modern
       # TODO: figure out a good way to handle header responses
       #       This is in part an API response type of thing; how do we ensure that
       #       an action defines the header that it says it's defining?
-      attribute :http_code, Types::Strict::Int | Types.Value(:default)
+      attribute :http_code, Types::Strict::Integer | Types.Value(:default)
       attribute :description, Types::Strict::String.default("No description provided.")
       attribute :content, Types.array_of(Content)
 

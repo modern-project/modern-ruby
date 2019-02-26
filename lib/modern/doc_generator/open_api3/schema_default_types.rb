@@ -16,7 +16,7 @@ module Modern
             register_literal_type(t, type: "string")
           end
 
-          [Types::Int, Types::Strict::Int, Types::Coercible::Int].each do |t|
+          [Types::Integer, Types::Strict::Integer, Types::Coercible::Integer].each do |t|
             register_literal_type(t, type: "integer", format: "int64")
           end
 
@@ -32,11 +32,11 @@ module Modern
             register_literal_type(t, type: "number", format: "double")
           end
 
-          [Types::Date, Types::Strict::Date, Types::Json::Date].each do |t|
+          [Types::Date, Types::Strict::Date, Types::JSON::Date].each do |t|
             register_literal_type(t, type: "string", format: "date")
           end
 
-          [Types::Time, Types::Strict::Time, Types::Json::Time].each do |t|
+          [Types::Time, Types::Strict::Time, Types::JSON::Time].each do |t|
             register_literal_type(t, type: "string", format: "date")
           end
 

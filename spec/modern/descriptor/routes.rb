@@ -3,14 +3,14 @@
 unless Object.constants.include? :RequestBodyTest
   module RequestBodyTest
     class RetBody < Modern::Struct
-      attribute :a, Modern::Types::Strict::Int
-      attribute :b, Modern::Types::Coercible::Int
-      attribute :c, Modern::Types::Strict::Int.optional.default(nil)
-      attribute :d, (Modern::Types::Strict::Int | Modern::Types::Strict::String).optional.default(nil)
+      attribute :a, Modern::Types::Strict::Integer
+      attribute :b, Modern::Types::Coercible::Integer
+      attribute :c, Modern::Types::Strict::Integer.optional.default(nil)
+      attribute :d, (Modern::Types::Strict::Integer | Modern::Types::Strict::String).optional.default(nil)
     end
 
     class Subclass < Modern::Struct
-      attribute :foo, Modern::Types::Strict::Int
+      attribute :foo, Modern::Types::Strict::Integer
     end
 
     class ExclusiveSubA < Modern::Struct; end
@@ -25,7 +25,7 @@ unless Object.constants.include? :RequestBodyTest
                         Modern::Types.Instance(ExclusiveSubB)
       attribute :hash, Modern::Types::Strict::Hash.strict(
         first: Modern::Types::Strict::String,
-        last: Modern::Types::Strict::Int.optional
+        last: Modern::Types::Strict::Integer.optional
       )
       attribute :array, Modern::Types::Strict::Array.of(
         Modern::Types.Instance(Subclass)
@@ -38,7 +38,7 @@ unless Object.constants.include? :ContentTest
   module ContentTest
     class RespBody < Modern::Struct
       attribute :a, Modern::Types::Strict::String
-      attribute :b, Modern::Types::Coercible::Int
+      attribute :b, Modern::Types::Coercible::Integer
     end
   end
 end
@@ -78,9 +78,9 @@ shared_context "request body routes" do
       request_body:
         Modern::Descriptor::RequestBody.new(
           type: Modern::Types::Strict::Hash.strict_with_defaults(
-            a: Modern::Types::Strict::Int,
-            b: Modern::Types::Coercible::Int,
-            c: Modern::Types::Strict::Int.optional.default(nil)
+            a: Modern::Types::Strict::Integer,
+            b: Modern::Types::Coercible::Integer,
+            c: Modern::Types::Strict::Integer.optional.default(nil)
           ),
           required: true
         ),
@@ -344,7 +344,7 @@ shared_context "parameter routes" do
       parameters: [
         Modern::Descriptor::Parameters::Query.new(
           name: "a",
-          type: Modern::Types::Coercible::Int,
+          type: Modern::Types::Coercible::Integer,
           required: true
         ),
         Modern::Descriptor::Parameters::Query.new(
@@ -354,7 +354,7 @@ shared_context "parameter routes" do
         ),
         Modern::Descriptor::Parameters::Query.new(
           name: "c",
-          type: Modern::Types::Coercible::Int,
+          type: Modern::Types::Coercible::Integer,
           required: false
         )
       ],
@@ -388,7 +388,7 @@ shared_context "parameter routes" do
         Modern::Descriptor::Parameters::Header.new(
           name: "a",
           header_name: "My-Header-A",
-          type: Modern::Types::Coercible::Int,
+          type: Modern::Types::Coercible::Integer,
           required: true
         ),
         Modern::Descriptor::Parameters::Header.new(
@@ -400,7 +400,7 @@ shared_context "parameter routes" do
         Modern::Descriptor::Parameters::Header.new(
           name: "c",
           header_name: "My-Header-C",
-          type: Modern::Types::Coercible::Int,
+          type: Modern::Types::Coercible::Integer,
           required: false
         )
       ],
@@ -434,7 +434,7 @@ shared_context "parameter routes" do
         Modern::Descriptor::Parameters::Cookie.new(
           name: "a",
           cookie_name: "My-Cookie-A",
-          type: Modern::Types::Coercible::Int,
+          type: Modern::Types::Coercible::Integer,
           required: true
         ),
         Modern::Descriptor::Parameters::Cookie.new(
@@ -446,7 +446,7 @@ shared_context "parameter routes" do
         Modern::Descriptor::Parameters::Cookie.new(
           name: "c",
           cookie_name: "My-Cookie-C",
-          type: Modern::Types::Coercible::Int,
+          type: Modern::Types::Coercible::Integer,
           required: false
         )
       ],
@@ -479,7 +479,7 @@ shared_context "parameter routes" do
       parameters: [
         Modern::Descriptor::Parameters::Path.new(
           name: "a",
-          type: Modern::Types::Coercible::Int
+          type: Modern::Types::Coercible::Integer
         ),
         Modern::Descriptor::Parameters::Path.new(
           name: "b",
@@ -487,7 +487,7 @@ shared_context "parameter routes" do
         ),
         Modern::Descriptor::Parameters::Path.new(
           name: "c",
-          type: Modern::Types::Coercible::Int
+          type: Modern::Types::Coercible::Integer
         )
       ],
       responses: [
@@ -525,7 +525,7 @@ shared_context "content routes" do
           content: [
             Modern::Descriptor::Content.new(
               media_type: "application/json",
-              type: Modern::Types::Strict::Int
+              type: Modern::Types::Strict::Integer
             )
           ]
         )
@@ -552,7 +552,7 @@ shared_context "content routes" do
           content: [
             Modern::Descriptor::Content.new(
               media_type: "application/json",
-              type: Modern::Types::Strict::Int
+              type: Modern::Types::Strict::Integer
             )
           ]
         )
@@ -581,7 +581,7 @@ shared_context "content routes" do
               media_type: "application/json",
               type: Modern::Types::Strict::Hash.strict(
                 a: Modern::Types::Strict::String,
-                b: Modern::Types::Coercible::Int
+                b: Modern::Types::Coercible::Integer
               )
             )
           ]
@@ -611,7 +611,7 @@ shared_context "content routes" do
               media_type: "application/json",
               type: Modern::Types::Strict::Hash.strict(
                 a: Modern::Types::Strict::String,
-                b: Modern::Types::Coercible::Int
+                b: Modern::Types::Coercible::Integer
               )
             )
           ]

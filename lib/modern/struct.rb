@@ -18,7 +18,9 @@ module Modern
       end
     end
 
-    constructor_type :strict_with_defaults
+    transform_types do |type|
+      type.constructor { |value| value.nil? ? Undefined : value  }
+    end
 
     include Copy
   end
